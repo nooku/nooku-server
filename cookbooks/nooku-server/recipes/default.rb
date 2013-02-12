@@ -21,7 +21,7 @@
 require "mysql"
 
 # Create configuration file
-template "#{node['nooku-server']['dir']}/configuration.php" do
+template "#{node['nooku-server']['dir']}/sites/config.php" do
   source "configuration.erb"
   mode 00644
   action :create_if_missing
@@ -50,7 +50,7 @@ ruby_block "db_install" do
       tables = dbh.query('SHOW TABLES')
       unless tables.num_rows > 0
         %w( install_schema install_data sample_data ).each do |file|
-          content = File.read("#{node['nooku-server']['dir']}/installation/sql/#{file}.sql")
+          content = File.read("#{node['nooku-server']['dir']}/install/sql/#{file}.sql")
           content = content.gsub("#__", node['nooku-server']['db']['prefix'])
 
           dbh.query(content)
