@@ -1,0 +1,82 @@
+class php::params {
+  $short_version = $version ? {
+    /^5\.3/ => '53',
+    /^5\.4/ => '54',
+  }
+
+  $configure = "\
+    --prefix=/usr/share/php53\
+    --datadir=/usr/share/php53\
+    --mandir=/usr/share/man\
+    --bindir=/usr/bin/php53\
+    --with-libdir=lib64\
+    --includedir=/usr/include\
+    --sysconfdir=/etc/php/53\
+    --with-config-file-path=/etc/php/53/cli\
+    --with-config-file-scan-dir=/etc/php/53/conf.d\
+    --localstatedir=/var\
+    --disable-debug\
+    --with-regex=php\
+    --disable-rpath\
+    --disable-static\
+    --disable-posix\
+    --with-pic\
+    --with-layout=GNU\
+    --with-pear=/usr/share/php53\
+    --enable-calendar\
+    --enable-sysvsem\
+    --enable-sysvshm\
+    --enable-sysvmsg\
+    --enable-bcmath\
+    --with-bz2\
+    --enable-ctype\
+    --without-gdbm\
+    --with-iconv\
+    --enable-exif\
+    --enable-ftp\
+    --enable-cli\
+    --with-gettext\
+    --enable-mbstring\
+    --with-pcre-regex=/usr\
+    --enable-shmop\
+    --enable-sockets\
+    --enable-wddx\
+    --with-libxml-dir=/usr\
+    --with-zlib\
+    --with-kerberos=/usr\
+    --with-openssl=/usr\
+    --enable-soap\
+    --enable-zip\
+    --with-mhash\
+    --with-exec-dir=/usr/lib/php5/libexec\
+    --without-mm\
+    --with-curl=shared,/usr\
+    --with-zlib-dir=/usr\
+    --with-gd=shared,/usr\
+    --enable-gd-native-ttf\
+    --with-gmp=shared,/usr\
+    --with-jpeg-dir=shared,/usr\
+    --with-xpm-dir=shared,/usr/X11R6\
+    --with-png-dir=shared,/usr\
+    --with-freetype-dir=shared,/usr\
+    --with-ttf=shared,/usr\
+    --with-t1lib=shared,/usr\
+    --with-ldap=shared,/usr\
+    --with-mysql=shared,/usr\
+    --with-mysqli=shared,/usr/bin/mysql_config\
+    --with-pspell=shared,/usr\
+    --with-xsl=shared,/usr\
+    --with-snmp=shared,/usr\
+    --with-sqlite=shared,/usr\
+    --with-tidy=shared,/usr\
+    --with-xmlrpc=shared\
+    --enable-pdo=shared\
+    --with-pdo-mysql=shared,/usr\
+    --enable-force-cgi-redirect  --enable-fastcgi\
+    --with-libdir=/lib/x86_64-linux-gnu\
+    --with-pdo-sqlite=shared\
+    --with-sqlite=shared\
+    --enable-ipv6\
+    --with-mcrypt\
+    --with-imap-ssl"
+}
