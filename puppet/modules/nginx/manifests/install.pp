@@ -1,4 +1,6 @@
 class nginx::install {
+  include apt
+
   apt::source { 'nginx':
     location   => 'http://nginx.org/packages/ubuntu/',
     repos      => 'nginx',
