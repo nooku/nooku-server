@@ -1,9 +1,13 @@
 Exec {
-  path => [ '/bin/', '/sbin/', '/usr/bin/', '/usr/sbin/' ]
+  path => [ '/bin/', '/sbin/', '/usr/bin/', '/usr/sbin/' ],
 }
 
-Package {
-  require => Exec['apt_update']
+stage { 'first':
+  before => Stage['main'],
+}
+
+class { 'ubuntu':
+  stage => 'first',
 }
 
 import 'nodes/*'
