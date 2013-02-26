@@ -1,3 +1,5 @@
 class php {
-  php::install { '5.3.21': }
+  include php::install
+  include php::config
+  include php::service
 }
