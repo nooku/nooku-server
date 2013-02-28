@@ -49,7 +49,7 @@ ruby_block "db_install" do
 
       tables = dbh.query('SHOW TABLES')
       unless tables.num_rows > 0
-        %w( install_schema install_data sample_data ).each do |file|
+        %w( schema data sample ).each do |file|
           content = File.read("#{node['nooku-server']['dir']}/install/mysql/#{file}.sql")
           content = content.gsub("#__", node['nooku-server']['db']['prefix'])
 
