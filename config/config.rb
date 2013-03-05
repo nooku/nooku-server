@@ -44,7 +44,7 @@ module NookuServer
       folders = []
 
       nginx['hosts'].each do |host|
-        folders << {:name => host['name'].gsub('.', '_'), :path => File.expand_path(host['path'])}
+        folders << {:name => host['name'], :path => File.expand_path(host['path'])}
       end if nginx.has_key?('hosts')
       folders
     end
