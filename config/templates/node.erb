@@ -1,3 +1,5 @@
 node '<%= name %>' inherits server {
-
+  nginx::resource::vhost { '<%= name %>':
+    www_root => '/var/www/<%= name %>/public',
+  }
 }
