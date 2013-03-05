@@ -1,0 +1,8 @@
+---
+nginx:
+  hosts:
+    - name: nooku.dev # required
+      path: ~/Workspace/nooku-framework
+
+    - name: custom.dev
+      path: ~/Workspace/custom-project
