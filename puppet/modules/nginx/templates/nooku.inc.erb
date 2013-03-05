@@ -1,0 +1,40 @@
+location = /robots.txt {
+  access_log off;
+  log_not_found off;
+}
+
+location = /favicon.ico {
+  access_log off;
+  log_not_found off;
+}
+
+# prevent hidden files (beginning with a period) from being served
+location ~ /\. {
+  access_log off;
+  log_not_found off;
+  deny all;
+}
+
+location / {
+  rewrite ^ /application/site/public/index.php last;
+}
+
+location /administrator {
+  rewrite ^ /application/admin/public/index.php last;
+}
+
+location /theme/ {
+  alias $application_root/site/public/theme/;
+}
+
+location /administrator/theme/ {
+  alias $application_root/admin/public/theme/;
+}
+
+location ~ /media/([-_a-z]+)/(.*)$ {
+  alias $root/component/$1/resources/media/$2;
+}
+
+location ~ /files/([-\w]+)/(.*)$ {
+  alias $root/sites/$1/files/$2;
+}

@@ -1,0 +1,49 @@
+server {
+  listen 80;
+  server_name <%= name %> www.<%= name %> 53.<%= name %>;
+
+  root <%= www_root %>;
+
+  set $root $document_root;
+  set $application_root $root/application;
+
+  access_log /var/log/nginx/<%= name %>.access.log;
+  error_log  /var/log/nginx/<%= name %>.error.log;
+
+  include nooku.inc;
+
+  location ~* ^/application/(.*)/public/index.php$ {
+    try_files $uri = 404;
+
+    fastcgi_pass  unix:/var/run/php53-fpm.sock;
+    fastcgi_index index.php;
+    fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+
+    include fastcgi_params;
+  }
+}
+
+server {
+  listen 80;
+  server_name 54.<%= name %>;
+
+  root <%= www_root %>;
+
+  set $root $document_root;
+  set $application_root $root/application;
+
+  access_log /var/log/nginx/<%= name %>.access.log;
+  error_log  /var/log/nginx/<%= name %>.error.log;
+
+  include nooku.inc;
+
+  location ~* ^/application/(.*)/public/index.php$ {
+    try_files $uri = 404;
+
+    fastcgi_pass  unix:/var/run/php54-fpm.sock;
+    fastcgi_index index.php;
+    fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+
+    include fastcgi_params;
+  }
+}
