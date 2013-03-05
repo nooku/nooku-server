@@ -9,7 +9,7 @@ class nginx::install {
   }
 
   package { 'nginx':
-    ensure => present,
+    ensure  => present,
     require => Anchor['apt::source::nginx'],
   }
 }
