@@ -10,9 +10,9 @@ class { 'ubuntu':
   stage => 'first',
 }
 
-import 'nodes/*'
-
 node server {
   include nginx
   include php
 }
+
+import 'nodes/*'
