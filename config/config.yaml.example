@@ -2,7 +2,8 @@
 nginx:
   hosts:
     - name: nooku.dev # required
-      path: ~/Workspace/nooku-framework
+      local_dir: ~/Workspace/nooku-framework
 
     - name: custom.dev
-      path: ~/Workspace/custom-project
+      local_dir: ~/Workspace/custom-project
+      public_dir: /code

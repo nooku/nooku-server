@@ -35,9 +35,9 @@ class nginx::config {
     require => File["${nginx::params::conf_dir}"],
   }
 
-  file { "${nginx::params.:conf_dir}/nooku.inc":
+  file { "${nginx::params::conf_dir}/nooku.inc":
     ensure  => file,
-    content => template('nginx/nginx.inc.erb'),
+    content => template('nginx/nooku.inc.erb'),
     notify  => Class['nginx::service'],
     require => File["${nginx::params::conf_dir}"],
   }

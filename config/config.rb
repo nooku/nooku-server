@@ -25,7 +25,7 @@ module NookuServer
       node = File.expand_path(File.join(File.dirname(__FILE__), 'templates/node.erb'))
 
       nginx['hosts'].each do |host|
-        namespace = OpenStruct.new(host)
+        namespace = OpenStruct.new({:name => host['name'], :public_dir => host['public_dir']})
         File.open(File.join(dir_path, File.basename(host['name'], File.extname(host['name'])) << '.pp'), 'w') do |f|
           f.write ERB.new(File.read(node)).result(namespace.instance_eval { binding })
         end
@@ -44,7 +44,7 @@ module NookuServer
       folders = []
 
       nginx['hosts'].each do |host|
-        folders << {:name => host['name'], :path => File.expand_path(host['path'])}
+        folders << {:name => host['name'], :path => File.expand_path(host['local_dir'])}
       end if nginx.has_key?('hosts')
       folders
     end
