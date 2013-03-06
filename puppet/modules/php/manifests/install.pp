@@ -3,7 +3,13 @@ class php::install {
     include php::params
 
     $version = $name
-    $url     = "http://www.php.net/get/php-${version}.tar.gz/from/this/mirror"
+
+    $short_version = $version ? {
+      /^5\.3/ => '53',
+      /^5\.4/ => '54',
+    }
+
+    $url = "http://www.php.net/get/php-${version}.tar.gz/from/this/mirror"
 
     $configure = $version ? {
       /^5\.3/ => $php::params::configure_53,
@@ -176,6 +182,51 @@ class php::install {
       timeout   => 0,
       logoutput => 'on_failure',
       require   => Exec["make-${version}"],
+    }
+
+    exec { "pear-channel-update-${version}":
+      cwd       => "/usr/local/php${short_version}/bin",
+      command   => 'pear channel-update pear.php.net',
+      path      => [ "/usr/local/php${short_version}/bin", '/bin/', '/sbin/', '/usr/bin/', '/usr/sbin/' ],
+      timeout   => 0,
+      logoutput => on_failure,
+      require   => Exec["make-install-${version}"],
+    }
+
+    exec { "pear-upgrade-all-${version}":
+      cwd       => "/usr/local/php${short_version}/bin",
+      command   => 'pear upgrade-all',
+      path      => [ "/usr/local/php${short_version}/bin", '/bin/', '/sbin/', '/usr/bin/', '/usr/sbin/' ],
+      timeout   => 0,
+      logoutput => on_failure,
+      require   => Exec["pear-channel-update-${version}"],
+    }
+
+    exec { "pear-auto-discover-${version}":
+      cwd       => "/usr/local/php${short_version}/bin",
+      command   => 'pear config-set auto_discover 1',
+      path      => [ "/usr/local/php${short_version}/bin", '/bin/', '/sbin/', '/usr/bin/', '/usr/sbin/' ],
+      timeout   => 0,
+      logoutput => on_failure,
+      require   => Exec["pear-upgrade-all-${version}"],
+    }
+
+    exec { "pear-install-phpunit-${version}":
+      cwd       => "/usr/local/php${short_version}/bin",
+      command   => 'pear install pear.phpunit.de/PHPUnit',
+      path      => [ "/usr/local/php${short_version}/bin", '/bin/', '/sbin/', '/usr/bin/', '/usr/sbin/' ],
+      timeout   => 0,
+      logoutput => on_failure,
+      require   => Exec["pear-auto-discover-${version}"],
+    }
+
+    exec { "install-composer-${version}":
+      cwd       => "/usr/local/php${short_version}/bin",
+      command   => "php -r \"eval('?>'.file_get_contents('https://getcomposer.org/installer'));\"",
+      path      => [ "/usr/local/php${short_version}/bin", '/bin/', '/sbin/', '/usr/bin/', '/usr/sbin/' ],
+      timeout   => 0,
+      logoutput => on_failure,
+      require   => Exec["make-install-${version}"],
     }
   }
 
