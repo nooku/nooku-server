@@ -10,7 +10,8 @@ class nginx::config {
   }
 
   file { "${nginx::params::conf_dir}":
-    ensure => directory,
+    ensure  => directory,
+    require => $require,
   }
 
   file { "${nginx::params::conf_dir}/conf.d":

@@ -1,6 +1,7 @@
 class ubuntu {
-  exec { 'ignore-grub':
+  exec { 'hold-grub':
     command   => 'apt-mark hold grub-common grub-pc grub-pc-bin grub2-common',
+    unless    => "dpkg --get-selections | grep -P '^grub[2]?-[-a-z]+\s+hold$'",
     logoutput => 'on_failure',
   }
 
@@ -12,6 +13,6 @@ class ubuntu {
   exec { 'ubuntu-upgrade':
     command   => 'apt-get -q -y upgrade',
     logoutput => 'on_failure',
-    require   => [ Exec['ignore-grub'], Exec['ubuntu-update'] ],
+    require   => [ Exec['hold-grub'], Exec['ubuntu-update'] ],
   }
 }

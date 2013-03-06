@@ -17,25 +17,27 @@ class php::config {
     }
 
     file { "${conf_dir}":
-      ensure => directory,
+      ensure  => directory,
+      require => $require,
     }
 
     file { "${conf_dir}/php.ini":
       ensure  => 'file',
       content => template("php/${version}/php.ini.erb"),
-      require => File["${conf_dir}"],
       notify  => Class['php::service'],
+      require => File["${conf_dir}"],
     }
 
     file { "${conf_dir}/php-fpm.conf.default":
-      ensure => absent,
+      ensure  => absent,
+      require => File["${conf_dir}"],
     }
 
     file { "${conf_dir}/php-fpm.conf":
       ensure  => 'file',
       content => template("php/${version}/php-fpm.conf.erb"),
-      require => File["${conf_dir}"],
       notify  => Class['php::service'],
+      require => File["${conf_dir}"],
     }
 
     file { "/etc/init.d/php${short_version}-fpm":
@@ -43,6 +45,7 @@ class php::config {
       content => template("php/${version}/php-fpm.init.erb"),
       mode    => 0744,
       notify  => Class['php::service'],
+      require => $require,
     }
   }
 
