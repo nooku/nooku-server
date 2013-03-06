@@ -17,15 +17,16 @@ class percona::config {
   exec { 'set-mysql-root-password':
     command   => "mysqladmin -u'root' password 'root'",
     logoutput => on_failure,
-    unless    => "which mysqladmin && mysqladmin --user='root' -password='root' status > /dev/null",
-    notify    => Class['percona::service'],
+    unless    => "which mysqladmin && mysqladmin --user='root' --password='root' status > /dev/null",
+    notify    => [ Exec['grant-all-to-root'], Class['percona::service'] ],
     require   => $require
   }
 
   exec { 'grant-all-to-root':
-    command   => "mysql --user='root' --password='root' --execute=\"GRANT ALL ON *.* TO 'root'@'%' IDENTIFIED BY 'root' WITH GRANT OPTION;\"",
-    logoutput => on_failure,
-    notify    => Class['percona::service'],
-    require   => Exec['set-mysql-root-password'],
+    command     => "mysql --user='root' --password='root' --execute=\"GRANT ALL ON *.* TO 'root'@'%' IDENTIFIED BY 'root' WITH GRANT OPTION;\"",
+    logoutput   => on_failure,
+    refreshonly => true,
+    notify      => Class['percona::service'],
+    require     => Exec['set-mysql-root-password'],
   }
 }

@@ -145,61 +145,72 @@ class php::install {
     exec { "download-${version}":
       cwd       => '/tmp',
       command   => "wget -O php-${version}.tar.gz ${url}",
-      creates   => "/tmp/php-${version}.tar.gz",
+      creates   => "/usr/local/php${short_version}",
       timeout   => 3600,
+      notify    => exec["extract-${version}"],
       logoutput => 'on_failure',
     }
 
     exec { "extract-${version}":
       cwd => '/tmp',
-      command   => "tar xzvpf php-${version}.tar.gz -C /usr/src",
-      unless    => "ls /usr/src/php-${version}",
-      logoutput => 'on_failure',
-      creates   => "/usr/src/php-${version}",
-      require   => Exec["download-${version}"],
+      command     => "tar xzvpf php-${version}.tar.gz -C /usr/src",
+      unless      => "ls /usr/src/php-${version}",
+      logoutput   => on_failure,
+      refreshonly => true,
+      notify      => Exec["configure-${version}"],
+      require     => Exec["download-${version}"],
     }
 
     exec { "configure-${version}":
-      cwd       => "/usr/src/php-${version}",
-      command   => "./configure $configure",
-      path      => [ "/usr/src/php-${version}", '/bin/', '/sbin/', '/usr/bin/', '/usr/sbin/' ],
-      timeout   => 0,
-      logoutput => 'on_failure',
-      require   => [ Exec["extract-${version}"], Package['build-essential'], Package['libxml2-dev'], Package['libpcre3-dev'], Package['libbz2-dev'], Package['libcurl4-openssl-dev'], Package['libjpeg-dev'], Package['libpng12-dev'], Package['libxpm-dev'], Package['libfreetype6-dev'], Package['libmysqlclient-dev'], Package['libt1-dev'], Package['libgd2-xpm-dev'], Package['libgmp-dev'], Package['libsasl2-dev'], Package['libmhash-dev'], Package['freetds-dev'], Package['libpspell-dev'], Package['libsnmp-dev'], Package['libtidy-dev'], Package['libxslt1-dev'], Package['libmcrypt-dev'] ],
+      cwd         => "/usr/src/php-${version}",
+      command     => "./configure $configure",
+      path        => [ "/usr/src/php-${version}", '/bin/', '/sbin/', '/usr/bin/', '/usr/sbin/' ],
+      timeout     => 0,
+      refreshonly => true,
+      logoutput   => on_failure,
+      notify      => Exec["make-${version}"],
+      require     => [ Exec["extract-${version}"], Package['build-essential'], Package['libxml2-dev'], Package['libpcre3-dev'], Package['libbz2-dev'], Package['libcurl4-openssl-dev'], Package['libjpeg-dev'], Package['libpng12-dev'], Package['libxpm-dev'], Package['libfreetype6-dev'], Package['libmysqlclient-dev'], Package['libt1-dev'], Package['libgd2-xpm-dev'], Package['libgmp-dev'], Package['libsasl2-dev'], Package['libmhash-dev'], Package['freetds-dev'], Package['libpspell-dev'], Package['libsnmp-dev'], Package['libtidy-dev'], Package['libxslt1-dev'], Package['libmcrypt-dev'] ],
     }
 
     exec { "make-${version}":
-      cwd       => "/usr/src/php-${version}",
-      command   => "make",
-      timeout   => 0,
-      logoutput => 'on_failure',
-      require   => Exec["configure-${version}"],
+      cwd         => "/usr/src/php-${version}",
+      command     => "make",
+      timeout     => 0,
+      refreshonly => true,
+      logoutput   => on_failure,
+      notify      => Exec["make-install-${version}"],
+      require     => Exec["configure-${version}"],
     }
 
     exec { "make-install-${version}":
-      cwd       => "/usr/src/php-${version}",
-      command   => "make install",
-      timeout   => 0,
-      logoutput => 'on_failure',
-      require   => Exec["make-${version}"],
+      cwd         => "/usr/src/php-${version}",
+      command     => "make install",
+      timeout     => 0,
+      refreshonly => true,
+      logoutput   => on_failure,
+      notify      => Exec["pear-channel-update-${version}"],
+      require     => Exec["make-${version}"],
     }
 
     exec { "pear-channel-update-${version}":
-      cwd       => "/usr/local/php${short_version}/bin",
-      command   => 'pear channel-update pear.php.net',
-      path      => [ "/usr/local/php${short_version}/bin", '/bin/', '/sbin/', '/usr/bin/', '/usr/sbin/' ],
-      timeout   => 0,
-      logoutput => on_failure,
-      require   => Exec["make-install-${version}"],
+      cwd         => "/usr/local/php${short_version}/bin",
+      command     => 'pear channel-update pear.php.net',
+      path        => [ "/usr/local/php${short_version}/bin", '/bin/', '/sbin/', '/usr/bin/', '/usr/sbin/' ],
+      timeout     => 0,
+      refreshonly => true,
+      logoutput   => on_failure,
+      notify      => Exec["pear-upgrade-all-${version}"],
+      require     => Exec["make-install-${version}"],
     }
 
     exec { "pear-upgrade-all-${version}":
-      cwd       => "/usr/local/php${short_version}/bin",
-      command   => 'pear upgrade-all',
-      path      => [ "/usr/local/php${short_version}/bin", '/bin/', '/sbin/', '/usr/bin/', '/usr/sbin/' ],
-      timeout   => 0,
-      logoutput => on_failure,
-      require   => Exec["pear-channel-update-${version}"],
+      cwd         => "/usr/local/php${short_version}/bin",
+      command     => 'pear upgrade-all',
+      path        => [ "/usr/local/php${short_version}/bin", '/bin/', '/sbin/', '/usr/bin/', '/usr/sbin/' ],
+      timeout     => 0,
+      refreshonly => true,
+      logoutput   => on_failure,
+      require     => Exec["pear-channel-update-${version}"],
     }
 
     exec { "pear-auto-discover-${version}":
@@ -208,16 +219,19 @@ class php::install {
       path      => [ "/usr/local/php${short_version}/bin", '/bin/', '/sbin/', '/usr/bin/', '/usr/sbin/' ],
       timeout   => 0,
       logoutput => on_failure,
+      creates   => "/usr/local/php${short_version}/bin/phpunit",
+      notify    => Exec["pear-install-phpunit-${version}"],
       require   => Exec["pear-upgrade-all-${version}"],
     }
 
     exec { "pear-install-phpunit-${version}":
-      cwd       => "/usr/local/php${short_version}/bin",
-      command   => 'pear install pear.phpunit.de/PHPUnit',
-      path      => [ "/usr/local/php${short_version}/bin", '/bin/', '/sbin/', '/usr/bin/', '/usr/sbin/' ],
-      timeout   => 0,
-      logoutput => on_failure,
-      require   => Exec["pear-auto-discover-${version}"],
+      cwd         => "/usr/local/php${short_version}/bin",
+      command     => 'pear install pear.phpunit.de/PHPUnit',
+      path        => [ "/usr/local/php${short_version}/bin", '/bin/', '/sbin/', '/usr/bin/', '/usr/sbin/' ],
+      timeout     => 0,
+      refreshonly => true,
+      logoutput   => on_failure,
+      require     => Exec["pear-auto-discover-${version}"],
     }
 
     exec { "install-composer-${version}":
@@ -226,6 +240,7 @@ class php::install {
       path      => [ "/usr/local/php${short_version}/bin", '/bin/', '/sbin/', '/usr/bin/', '/usr/sbin/' ],
       timeout   => 0,
       logoutput => on_failure,
+      creates   => "/usr/local/php${short_version}/bin/composer.phar",
       require   => Exec["make-install-${version}"],
     }
   }

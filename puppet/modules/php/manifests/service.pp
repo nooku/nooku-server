@@ -3,9 +3,9 @@ class php::service {
 
   service { ['php53-fpm', 'php54-fpm']:
     ensure     => running,
-    hasstatus  => true,
+    hasstatus  => false,
     hasrestart => true,
-    enable     => true,
+    enable     => false,
     require    => $require,
   }
 }
