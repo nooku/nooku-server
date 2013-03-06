@@ -13,6 +13,7 @@ class { 'ubuntu':
 node server {
   include nginx
   include php
+  include percona
 }
 
 import 'nodes/*'
