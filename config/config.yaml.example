@@ -1,9 +1,14 @@
 ---
-nginx:
-  hosts:
-    - name: nooku.dev # required
-      local_dir: ~/Workspace/nooku-framework
+nooku.dev: # required
+  dir: ~/Workspace/nooku-framework
+  sql:
+    nooku: [ install/mysql/schema.sql, install/mysql/data.sql, install/mysql/sample.sql ]
 
-    - name: custom.dev
-      local_dir: ~/Workspace/custom-project
-      public_dir: /code
+custom.dev:
+  dir: ~/Workspace/custom-project
+  sql:
+    custom:
+      - install/mysql/schema.sql
+      - install/mysql/data.sql
+      - install/mysql/sample.sql
+      - application/admin/custom/resource/install/schema.sql

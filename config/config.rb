@@ -1,6 +1,7 @@
-require 'yaml'
 require 'erb'
+require 'json'
 require 'ostruct'
+require 'yaml'
 
 module NookuServer
   class Config
@@ -13,6 +14,10 @@ module NookuServer
 
       if File.exists?(@file)
         @data.merge!(YAML.load_file(@file))
+
+        @data.each do |host, settings|
+          settings['dir'] = File.expand_path(settings['dir'])
+        end
       end
     end
 
@@ -24,28 +29,31 @@ module NookuServer
       # Create nodes from node.erb.
       node = File.expand_path(File.join(File.dirname(__FILE__), 'templates/node.erb'))
 
-      nginx['hosts'].each do |host|
-        namespace = OpenStruct.new({:name => host['name'], :public_dir => host['public_dir']})
-        File.open(File.join(dir_path, File.basename(host['name'], File.extname(host['name'])) << '.pp'), 'w') do |f|
-          f.write ERB.new(File.read(node)).result(namespace.instance_eval { binding })
+      data.each do |host,settings|
+        vars = {
+          :name       => host,
+          :public_dir => (File.directory?(File.expand_path(File.join(settings['dir'], 'code')))) ? '/code' : '/',
+        }
+
+        vars[:sql] = settings['sql'] if settings.has_key?('sql')
+
+        namespace = OpenStruct.new(vars)
+        File.open(File.join(dir_path, File.basename(host, File.extname(host)) << '.pp'), 'w') do |f|
+          f.write ERB.new(File.read(node), nil, '-').result(namespace.instance_eval { binding })
         end
-      end if nginx.has_key?('hosts')
+      end
     end
 
     def data
       @data ||= parse
     end
 
-    def nginx
-      data.has_key?('nginx') ? data['nginx'] : {}
-    end
-
     def share_folders
       folders = []
 
-      nginx['hosts'].each do |host|
-        folders << {:name => host['name'], :path => File.expand_path(host['local_dir'])}
-      end if nginx.has_key?('hosts')
+      data.each do |host, settings|
+        folders << {:name => host, :path => settings['dir']}
+      end
       folders
     end
   end
