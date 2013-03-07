@@ -1,7 +1,7 @@
 class php::config {
-  $require = Class['php::install']
-
   define php::config::source {
+    $require = Class['php::install']
+
     File {
       owner => 'root',
       group => 'root',

@@ -147,7 +147,7 @@ class php::install {
       command   => "wget -O php-${version}.tar.gz ${url}",
       creates   => "/usr/local/php${short_version}",
       timeout   => 3600,
-      notify    => exec["extract-${version}"],
+      notify    => Exec["extract-${version}"],
       logoutput => 'on_failure',
     }
 
