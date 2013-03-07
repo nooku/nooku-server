@@ -13,6 +13,7 @@ class ubuntu {
 
   exec { 'ubuntu-upgrade':
     command     => 'apt-get -q -y upgrade',
+    timeout     => 0,
     logoutput   => on_failure,
     refreshonly => true,
     require     => [ Exec['hold-grub'], Exec['ubuntu-update'] ],
