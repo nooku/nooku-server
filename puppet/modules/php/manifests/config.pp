@@ -21,8 +21,13 @@ class php::config {
       require => $require,
     }
 
+    file { "${conf_dir}/conf.d":
+      ensure  => directory,
+      require => File["${conf_dir}"],
+    }
+
     file { "${conf_dir}/php.ini":
-      ensure  => 'file',
+      ensure  => file,
       content => template("php/${version}/php.ini.erb"),
       notify  => Class['php::service'],
       require => File["${conf_dir}"],
@@ -34,14 +39,21 @@ class php::config {
     }
 
     file { "${conf_dir}/php-fpm.conf":
-      ensure  => 'file',
+      ensure  => file,
       content => template("php/${version}/php-fpm.conf.erb"),
       notify  => Class['php::service'],
       require => File["${conf_dir}"],
     }
 
+    file { "${conf_dir}/conf.d/xdebug.ini":
+      ensure  => file,
+      content => template("php/${version}/xdebug.ini.erb"),
+      notify  => Class['php::service'],
+      require => File["${conf_dir}/conf.d"],
+    }
+
     file { "/etc/init.d/php${short_version}-fpm":
-      ensure  => 'file',
+      ensure  => file,
       content => template("php/${version}/php-fpm.init.erb"),
       mode    => 0744,
       notify  => Class['php::service'],

@@ -158,7 +158,7 @@ class php::install {
     }
 
     exec { "extract-${version}":
-      cwd => '/tmp',
+      cwd         => '/tmp',
       command     => "tar xzvpf php-${version}.tar.gz -C /usr/src",
       unless      => "ls /usr/src/php-${version}",
       logoutput   => on_failure,
