@@ -1,0 +1,28 @@
+node '<%= name %>' inherits server {
+  nginx::resource::vhost { '<%= name %>':
+    www_root   => '/var/www/<%= name %>/public',
+    public_dir => '<%= public_dir %>',
+  }
+
+  <%- if defined?(sql) -%><%- sql.each do |database, files| -%>
+  percona::resource::database { '<%= database %>': }
+  <%- previous = '' -%>
+  <%- files.each do |file| %>
+  percona::resource::import { '<%= database %>:<%= file %>':
+    database => '<%= database %>',
+    file     => '/var/www/<%= name %>/source/<%= file %>',
+    <%- unless previous.empty? -%>
+    require  => Exec['import-sql-<%= previous %>'],
+    <%- end -%>
+  }
+  <%- previous = "#{database}:#{file}" -%>
+  <%- end -%>
+  <%- end -%><%- end -%>
+
+  <%- if defined?(less) -%><%- less.each do |source, destination| -%>
+  less::resource::watcher { '<%= name %>:<%= source %>':
+    source      => '/var/www/<%= name %>/source/<%= source %>',
+    destination => '/var/www/<%= name %>/source/<%= destination %>',
+  }
+  <%- end -%><%- end -%>
+}
