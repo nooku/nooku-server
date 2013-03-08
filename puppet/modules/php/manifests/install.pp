@@ -16,6 +16,11 @@ class php::install {
       /^5\.4/ => $php::params::configure_54,
     }
 
+    $xdebug = $version ? {
+      /^5\.3/ => '/usr/local/php53/lib/php/extensions/no-debug-non-zts-20090626/xdebug.so',
+      /^5\.4/ => '/usr/local/php54/lib/php/extensions/no-debug-non-zts-20100525/xdebug.so',
+    }
+
     if ! defined(Package['build-essential']) {
       package { 'build-essential':
         ensure => present,
@@ -224,6 +229,7 @@ class php::install {
       path      => [ "/usr/local/php${short_version}/bin", '/bin/', '/sbin/', '/usr/bin/', '/usr/sbin/' ],
       timeout   => 0,
       logoutput => on_failure,
+      creates   => "/usr/local/php${short_version}/bin/phpunit",
       require   => Exec["pear-upgrade-all-${version}"],
     }
 
@@ -273,7 +279,7 @@ class php::install {
       path      => [ "/usr/local/php${short_version}/bin", '/bin/', '/sbin/', '/usr/bin/', '/usr/sbin/' ],
       timeout   => 0,
       logoutput => on_failure,
-      creates   => "/usr/local/php${short_version}/lib/php/extensions/no-debug-non-zts-20090626/xdebug.so",
+      creates   => "${xdebug}",
       require   => Exec["make-install-${version}"],
     }
   }
