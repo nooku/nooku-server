@@ -1,4 +1,6 @@
 define percona::resource::database() {
+  $require = Class['percona::service']
+
   exec { "drop-database-${name}":
     command   => "mysql --user='root' --password='root' --execute 'DROP DATABASE IF EXISTS `${name}`;'",
     logoutput => on_failure,
