@@ -18,4 +18,10 @@ class ubuntu {
     refreshonly => true,
     require     => [ Exec['hold-grub'], Exec['ubuntu-update'] ],
   }
+
+  if ! defined(Package['curl']) {
+    package { 'curl':
+      ensure => present,
+    }
+  }
 }
