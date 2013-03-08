@@ -2,44 +2,59 @@ Vagrant uses Oracle’s VirtualBox to build configurable, lightweight, and porta
 
 # Installation
 
-1. Download and install VirtualBox. Nothing else needs to be done, you even don't need to open it after install, Vagrant uses the command line interface of VirtualBox.
+1. Download and install [VirtualBox](https://www.virtualbox.org/wiki/Downloads). Nothing else needs to be done, you even don't need to open it after install, Vagrant uses the command line interface of VirtualBox.
 
-2. Download and install Vagrant: http://docs.vagrantup.com/v1/docs/getting-started/index.html
+2. Download and install [Vagrant](http://docs.vagrantup.com/v1/docs/getting-started/index.html).
 
-3. Vagrant needs to create a shared directory between your local system and Ubuntu. For this, edit the following line in Vagrantfile:
+# Configuration
 
-    config.vm.share_folder 'source', '/var/www/nooku-server/source', '/Users/Example/Workspace/nooku-framework'
+The Vagrant box uses a YAML configuration file to create hosts. A sample configuration file can be found in `config/config.yaml.example`:
 
-The last argument should point to the root of the Nooku Framework repository on your local system. Note: This is a temporary solution, in later versions you won't have to edit the versioned Vagrantfile.
 
-Because Vagrant creates a shared folder for the specified paths, you can modify files locally like you would do otherwise. Changes will be immediately available on the server. Think about it like a symlink, where your local directory is the source, and the directory on the server is the symlink.
+    ---
+    nooku.dev: # required
+      dir: ~/Workspace/nooku-framework
+      sql:
+        nooku: [ install/mysql/schema.sql, install/mysql/data.sql, install/mysql/sample.sql ]
+      less:
+        application/site/public/theme/bootstrap/less: application/site/public/theme/bootstrap/css
 
-3. In the Nooku Server repository run the following command:
+Create an empty `config.yaml` file in the `config` directory and add the hosts you want to use. Any number of hosts can be added, but there must be at least one host with the name `nooku.dev`. The first line is the domain name.  The first parameter `dir` is the path to the local directory on the host system. Path will be expanded, so shortcuts like `~` can be used.
 
-    vagrant up
+The second parameter `sql` is for database setup. This parameter is optional. If provided, the script will create the databases on each `vagrant up` and import the specified SQL files. The first word in the line under `sql` is the name of the database, followed by an array of SQL files to be imported. SQL files are optional, an empty array `[]` should be used in that case. Any number of databases can be specified under `sql`.
 
-It will take some time to run, because first it needs to download the Ubuntu image if you haven't downloaded it before, and then it needs to install packages and configure services. After the Ubuntu image is downloaded it usually takes less than 10 minutes.
+The third parameter is `less`. The server has `autoless` installed. Use the source file or directory as a key, destination as value, and autoless will automatically create the CSS files.
 
-4. Create local host config. Open /etc/hosts on your local system and add the host to it:
+# Networking
 
-    192.168.50.10   nooku.dev
+Vagrant assigns the IP `192.168.50.10` to the virtual machine. Nginx uses name-based virtual hosts, so the host machine has to be configured to point domains to this IP.
 
-Flush the cache:
+1. Open /etc/hosts on your local system and add the domain names and to it:
 
-dscacheutil -flushcache
+        192.168.50.10   nooku.dev www.nooku.dev 53.nooku.dev 54.nooku.dev
 
-And after that you can access the site at http://nooku.dev/ (or whatever hostname you chose).
+2. Flush the cache:
 
-Some useful Vagrant commands:
- - vagrant destroy: Destroys the environment (including the VirtualBox image). To create the image again, run vagrant up.
- - vagrant halt: Stops Ubuntu. To start it again run vagrant up.
- - vagrant ssh: Connects to the Ubuntu box via SSH.
+        dscacheutil -flushcache
 
-# Access
+After this you can access the site at `http://nooku.dev/` (or whatever domain you chose).
 
-To access the Ubuntu box, execute "vagrant up" in repository/code.
-To access the database, use "Standard" connection with 192.168.50.10 as host and "root" as username and password.
+# Usage
 
-# Xdebug
+Setting up the Vagrant box is easy. Just `cd` into the directory of the nooku server repository and run `vagrant up`. The initial setup takes about 40-60 minutes and requires internet connection. To stop the system, execute `vagrant halt`. To completely destroy the virtual image, run `vagrant destroy`. To create the image again, run `vagrant up`. If you want to connect to the box using SSH, run `vagrant ssh`.
 
-Xdebug is configured on the server. It is set to listen on port 9001.
+To access the database, create a standard connection with the IP `192.168.50.10`, and use `root` as username and password.
+
+# PHP
+
+## Versions
+
+Nooku Server has multiple PHP version support, currently supported versions are 5.3 and 5.4. These can be used at the same time. This is setup allows you to test the application under both PHP versions. The main domain (for example `nooku.dev`) is configured to use PHP 5.3. Nginx automatically creates two subdomains: `53.nooku.dev` and `54.nooku.dev`. `53.nooku.dev` is actually the same as `nooku.dev`. `54.nooku.dev` however uses PHP 5.4.
+
+## Developer tools
+
+PHPunit and Composer are also installed on the system. They can be found in `/usr/local/php53/bin` and `/usr/local/php54/bin`.
+
+## Xdebug
+
+// TODO
