@@ -19,5 +19,11 @@ Vagrant::Config.run do |config|
     puppet.manifests_path = 'puppet/manifests'
     puppet.manifest_file = 'init.pp'
     puppet.module_path = 'puppet/modules'
+
+    # Uncomment these lines if you have issues.
+    #puppet.options = [
+    #  '--verbose',
+    #  '--debug',
+    #]
   end
 end
