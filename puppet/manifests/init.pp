@@ -18,6 +18,7 @@ node server {
   include subversion
   include zip
   include vim
+  include less
 }
 
 import 'nodes/*'

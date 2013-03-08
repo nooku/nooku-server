@@ -35,7 +35,8 @@ module NookuServer
           :public_dir => (File.directory?(File.expand_path(File.join(settings['dir'], 'code')))) ? '/code' : '/',
         }
 
-        vars[:sql] = settings['sql'] if settings.has_key?('sql')
+        vars[:sql]  = settings['sql'] if settings.has_key?('sql')
+        vars[:less] = settings['less'] if settings.has_key?('less')
 
         namespace = OpenStruct.new(vars)
         File.open(File.join(dir_path, File.basename(host, File.extname(host)) << '.pp'), 'w') do |f|

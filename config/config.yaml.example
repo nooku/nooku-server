@@ -3,6 +3,8 @@ nooku.dev: # required
   dir: ~/Workspace/nooku-framework
   sql:
     nooku: [ install/mysql/schema.sql, install/mysql/data.sql, install/mysql/sample.sql ]
+  less:
+    application/site/public/theme/bootstrap/less: application/site/public/theme/bootstrap/css
 
 custom.dev:
   dir: ~/Workspace/custom-project
@@ -12,3 +14,5 @@ custom.dev:
       - install/mysql/data.sql
       - install/mysql/sample.sql
       - application/admin/custom/resource/install/schema.sql
+  less:
+      application/site/public/theme/bootstrap/less: application/site/public/theme/bootstrap/css
