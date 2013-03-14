@@ -291,6 +291,16 @@ class php::install {
       creates   => "${xdebug}",
       require   => Exec["make-install-${version}"],
     }
+
+    exec { "install-taint-${version}":
+      cwd       => "/usr/local/php${short_version}/bin",
+      command   => "pecl install taint",
+      path      => [ "/usr/local/php${short_version}/bin", '/bin/', '/sbin/', '/usr/bin/', '/usr/sbin/' ],
+      timeout   => 0,
+      logoutput => on_failure,
+      creates   => "${xdebug}",
+      require   => Exec["make-install-${version}"],
+    }
   }
 
   php::install::source { '5.3.22': }
