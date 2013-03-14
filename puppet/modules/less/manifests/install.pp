@@ -1,10 +1,10 @@
 class less::install {
-  apt::ppa { 'ppa:richarvey/nodejs': }
+  apt::ppa { 'ppa:chris-lea/node.js': }
 
   if ! defined(Package['npm']) {
     package { 'npm':
       ensure  => present,
-      require => Anchor['apt::ppa::ppa:richarvey/nodejs'],
+      require => Anchor['apt::ppa::ppa:chris-lea/node.js'],
     }
   }
 
