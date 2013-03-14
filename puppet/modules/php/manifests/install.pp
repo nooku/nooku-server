@@ -273,6 +273,15 @@ class php::install {
       require   => Exec["make-install-${version}"],
     }
 
+    exec { "install-php-analyzer-${version}":
+      cwd       => "/usr/local/php${short_version}/bin",
+      command   => "composer create-project scrutinizer/php-analyzer:dev-master",
+      path      => [ "/usr/local/php${short_version}/bin", '/bin/', '/sbin/', '/usr/bin/', '/usr/sbin/' ],
+      timeout   => 0,
+      logoutput => on_failure,
+      require   => Exec["install-composer-${version}"],
+    }
+
     exec { "install-xdebug-${version}":
       cwd       => "/usr/local/php${short_version}/bin",
       command   => "pecl install xdebug",
