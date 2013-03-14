@@ -1,5 +1,4 @@
 define nginx::resource::vhost (
-  $www_root   = undef,
   $public_dir = '/',
 ) {
   include nginx::params
@@ -27,5 +26,29 @@ define nginx::resource::vhost (
   file { "/var/www/${name}/public":
     ensure => link,
     target => "/var/www/${name}/source${public_dir}",
+  }
+
+  file { "/var/www/${name}/private":
+    ensure => directory,
+  }
+
+  file { "/var/www/${name}/private/access":
+    ensure  => directory,
+    require => File["/var/www/${name}/private"],
+  }
+
+  file { "/var/www/${name}/private/access/index.php":
+    ensure  => file,
+    content => template('nginx/access.php.erb'),
+  }
+
+  file { "/var/www/${name}/private/error":
+    ensure  => directory,
+    require => File["/var/www/${name}/private"],
+  }
+
+  file { "/var/www/${name}/private/error/index.php":
+    ensure  => file,
+    content => template('nginx/error.php.erb'),
   }
 }
