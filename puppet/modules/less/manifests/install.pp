@@ -1,4 +1,6 @@
 class less::install {
+  include apt
+
   apt::ppa { 'ppa:chris-lea/node.js': }
 
   package { 'nodejs':
@@ -7,16 +9,14 @@ class less::install {
   }
 
   exec { 'npm-install-less':
-    command   => 'npm install -g less',
-    unless    => 'which lessc',
-    logoutput => on_failure,
-    require   => Package['nodejs'],
+    command => 'npm install -g less',
+    unless  => 'which lessc',
+    require => Package['nodejs'],
   }
 
   exec { 'npm-install-autoless':
-    command   => 'npm install -g autoless',
-    unless    => 'which autoless',
-    logoutput => on_failure,
-    require   => Package['nodejs'],
+    command => 'npm install -g autoless',
+    unless  => 'which autoless',
+    require => Package['nodejs'],
   }
 }
