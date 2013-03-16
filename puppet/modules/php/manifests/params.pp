@@ -1,4 +1,7 @@
 class php::params {
+  $xdebug_53 = '/usr/local/php53/lib/php/extensions/no-debug-non-zts-20090626/xdebug.so'
+  $xdebug_54 = '/usr/local/php54/lib/php/extensions/no-debug-non-zts-20100525/xdebug.so'
+
   $conf_dir_53 = '/etc/php53'
   $conf_dir_54 = '/etc/php54'
 
@@ -6,7 +9,7 @@ class php::params {
     --enable-fpm\
     --prefix=/usr/local/php53\
     --sysconfdir=/etc/php53\
-    --with-config-file-path=/etc/php53/cli\
+    --with-config-file-path=/etc/php53\
     --with-config-file-scan-dir=/etc/php53/conf.d\
     --enable-bcmath\
     --enable-calendar\
@@ -44,7 +47,7 @@ class php::params {
     --enable-fpm\
     --prefix=/usr/local/php54\
     --sysconfdir=/etc/php54\
-    --with-config-file-path=/etc/php54/cli\
+    --with-config-file-path=/etc/php54\
     --with-config-file-scan-dir=/etc/php54/conf.d\
     --enable-bcmath\
     --enable-calendar\
