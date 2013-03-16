@@ -70,10 +70,9 @@ class php::install {
   }
 
   exec { 'pear-channel-update':
-    command     => 'pear channel-update pear.php.net',
-    timeout     => 0,
-    logoutput   => on_failure,
-    require     => File['/usr/bin/php', '/usr/bin/pear'],
+    command => 'pear channel-update pear.php.net',
+    timeout => 0,
+    require => File['/usr/bin/php', '/usr/bin/pear'],
   }
 
   exec { 'pear-upgrade-all':
@@ -83,35 +82,31 @@ class php::install {
   }
 
   exec { 'pear-discover-phpunit':
-    command   => 'pear channel-discover pear.phpunit.de',
-    creates   => "${php_bin}/phpunit",
-    timeout   => 0,
-    logoutput => on_failure,
-    require   => File['/usr/bin/php', '/usr/bin/pear'],
+    command => 'pear channel-discover pear.phpunit.de',
+    creates => "${php_bin}/phpunit",
+    timeout => 0,
+    require => File['/usr/bin/php', '/usr/bin/pear'],
   }
 
   exec { 'pear-discover-symfony':
-    command   => 'pear channel-discover pear.symfony.com',
-    creates   => "${php_bin}/phpunit",
-    timeout   => 0,
-    logoutput => on_failure,
-    require   => Exec['pear-upgrade-all'],
+    command => 'pear channel-discover pear.symfony.com',
+    creates => "${php_bin}/phpunit",
+    timeout => 0,
+    require => Exec['pear-upgrade-all'],
   }
 
   exec { 'pear-discover-ez':
-    command   => 'pear channel-discover components.ez.no',
-    creates   => "${php_bin}/phpunit",
-    timeout   => 0,
-    logoutput => on_failure,
-    require   => File['/usr/bin/php', '/usr/bin/pear'],
+    command => 'pear channel-discover components.ez.no',
+    creates => "${php_bin}/phpunit",
+    timeout => 0,
+    require => File['/usr/bin/php', '/usr/bin/pear'],
   }
 
   exec { 'pear-install-phpunit':
-    command     => 'pear install phpunit/PHPUnit',
-    creates     => "${php_bin}/phpunit",
-    timeout     => 0,
-    logoutput   => on_failure,
-    require     => Exec['pear-discover-phpunit', 'pear-discover-symfony', 'pear-discover-ez'],
+    command => 'pear install phpunit/PHPUnit',
+    creates => "${php_bin}/phpunit",
+    timeout => 0,
+    require => Exec['pear-discover-phpunit', 'pear-discover-symfony', 'pear-discover-ez'],
   }
 
   file { '/usr/bin/phpunit':
@@ -121,12 +116,11 @@ class php::install {
   }
 
   exec { 'install-composer':
-    cwd       => "${php_bin}",
-    command   => 'curl -s https://getcomposer.org/installer | php',
-    creates   => "${php_bin}/composer.phar",
-    timeout   => 0,
-    logoutput => on_failure,
-    require   => File['/usr/bin/php'],
+    cwd     => "${php_bin}",
+    command => 'curl -s https://getcomposer.org/installer | php',
+    creates => "${php_bin}/composer.phar",
+    timeout => 0,
+    require => File['/usr/bin/php'],
   }
 
   file { '/usr/bin/composer':
@@ -136,12 +130,11 @@ class php::install {
   }
 
   exec { 'install-php-analyzer':
-    cwd       => '/usr/local',
-    command   => 'composer create-project scrutinizer/php-analyzer:dev-master',
-    creates   => '/usr/local/php-analyzer',
-    timeout   => 0,
-    logoutput => on_failure,
-    require   => File['/usr/bin/composer'],
+    cwd     => '/usr/local',
+    command => 'composer create-project scrutinizer/php-analyzer:dev-master',
+    creates => '/usr/local/php-analyzer',
+    timeout => 0,
+    require => File['/usr/bin/composer'],
   }
 
   file { '/usr/bin/phpalizer':

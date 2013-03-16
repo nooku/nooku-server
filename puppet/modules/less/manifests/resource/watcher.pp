@@ -5,8 +5,7 @@ define less::resource::watcher(
   $require = Class['less::install']
 
   exec { "watch-${name}":
-    command   => "autoless '${source}' '${destination}' &",
-    logoutput => on_failure,
-    require   => $require,
+    command => "autoless '${source}' '${destination}' &",
+    require => $require,
   }
 }

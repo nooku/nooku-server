@@ -22,57 +22,51 @@ define php::install::source() {
   realize(Package[$php::install::packages])
 
   exec { "download-${version}":
-    cwd       => '/tmp',
-    command   => "wget -O php-${version}.tar.gz ${url}",
-    creates   => "/usr/local/php${short_version}/bin/php",
-    timeout   => 3600,
-    logoutput => 'on_failure',
+    cwd     => '/tmp',
+    command => "wget -O php-${version}.tar.gz ${url}",
+    creates => "/usr/local/php${short_version}/bin/php",
+    timeout => 3600,
   }
 
   exec { "extract-${version}":
-    cwd       => '/tmp',
-    command   => "tar xzvpf php-${version}.tar.gz -C /usr/src",
-    creates   => "/usr/local/php${short_version}/bin/php",
-    logoutput => on_failure,
-    require   => Exec["download-${version}"],
+    cwd     => '/tmp',
+    command => "tar xzvpf php-${version}.tar.gz -C /usr/src",
+    creates => "/usr/local/php${short_version}/bin/php",
+    require => Exec["download-${version}"],
   }
 
   exec { "configure-${version}":
-    cwd       => "/usr/src/php-${version}",
-    command   => "configure $configure",
-    creates   => "/usr/local/php${short_version}/bin/php",
-    path      => [ "/usr/src/php-${version}", '/bin/', '/sbin/', '/usr/bin/', '/usr/sbin/' ],
-    timeout   => 0,
-    logoutput => on_failure,
-    require   => [ Exec["extract-${version}"], Package[$php::install::packages]],
+    cwd     => "/usr/src/php-${version}",
+    command => "configure ${configure}",
+    creates => "/usr/local/php${short_version}/bin/php",
+    path    => [ "/usr/src/php-${version}", '/bin/', '/sbin/', '/usr/bin/', '/usr/sbin/' ],
+    timeout => 0,
+    require => [ Exec["extract-${version}"], Package[$php::install::packages]],
   }
 
   exec { "make-${version}":
-    cwd       => "/usr/src/php-${version}",
-    command   => "make",
-    creates   => "/usr/local/php${short_version}/bin/php",
-    timeout   => 0,
-    logoutput => on_failure,
-    require   => Exec["configure-${version}"],
+    cwd     => "/usr/src/php-${version}",
+    command => 'make',
+    creates => "/usr/local/php${short_version}/bin/php",
+    timeout => 0,
+    require => Exec["configure-${version}"],
   }
 
   exec { "make-install-${version}":
-    cwd       => "/usr/src/php-${version}",
-    command   => "make install",
-    creates   => "/usr/local/php${short_version}/bin/php",
-    timeout   => 0,
-    logoutput => on_failure,
-    require   => Exec["make-${version}"],
+    cwd     => "/usr/src/php-${version}",
+    command => 'make install',
+    creates => "/usr/local/php${short_version}/bin/php",
+    timeout => 0,
+    require => Exec["make-${version}"],
   }
 
   exec { "install-xdebug-${version}":
-    cwd       => "/usr/local/php${short_version}/bin",
-    command   => 'pecl install xdebug',
-    path      => [ "/usr/local/php${short_version}/bin", '/bin/', '/sbin/', '/usr/bin/', '/usr/sbin/' ],
-    creates   => $xdebug,
-    timeout   => 0,
-    logoutput => on_failure,
-    require   => Exec["make-install-${version}"],
+    cwd     => "/usr/local/php${short_version}/bin",
+    command => 'pecl install xdebug',
+    path    => [ "/usr/local/php${short_version}/bin", '/bin/', '/sbin/', '/usr/bin/', '/usr/sbin/' ],
+    creates => $xdebug,
+    timeout => 0,
+    require => Exec["make-install-${version}"],
   }
 
   anchor { "php::install::source::${name}":
