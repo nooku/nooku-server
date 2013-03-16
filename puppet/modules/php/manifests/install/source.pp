@@ -1,23 +1,25 @@
-define php::install::source(
-  $packages = undef,
-) {
-  include php::params
-
+define php::install::source() {
   $version = $name
   $url     = "http://www.php.net/get/php-${version}.tar.gz/from/this/mirror"
 
   case $version {
     /^5\.3/: {
+      include php::params::53
+
       $short_version = '53'
-      $configure     = $php::params::configure_53
-      $xdebug        = $php::params::xdebug_53
+      $configure     = $php::params::53::configure
+      $xdebug        = $php::params::53::xdebug
     }
     /^5\.4/: {
+      include php::params::54
+
       $short_version = '54'
-      $configure     = $php::params::configure_54
-      $xdebug        = $php::params::xdebug_54
+      $configure     = $php::params::54::configure
+      $xdebug        = $php::params::54::xdebug
     }
   }
+
+  realize(Package[$php::install::packages])
 
   exec { "download-${version}":
     cwd       => '/tmp',
@@ -42,7 +44,7 @@ define php::install::source(
     path      => [ "/usr/src/php-${version}", '/bin/', '/sbin/', '/usr/bin/', '/usr/sbin/' ],
     timeout   => 0,
     logoutput => on_failure,
-    require   => [ Exec["extract-${version}"], Package[$packages]],
+    require   => [ Exec["extract-${version}"], Package[$php::install::packages]],
   }
 
   exec { "make-${version}":

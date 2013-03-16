@@ -24,13 +24,11 @@ class php::install {
     'libmcrypt-dev'
   ]
 
-  package { $packages:
+  @package { $packages:
     ensure => present,
   }
 
-  php::install::source { ['5.3.22', '5.4.12']:
-    packages => $packages,
-  }
+  php::install::source { ['5.3.22', '5.4.12']: }
 
   $php_bin = '/usr/local/php54/bin'
   $require = Anchor['php::install::source::5.4.12']

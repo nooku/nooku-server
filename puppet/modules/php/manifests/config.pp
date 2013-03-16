@@ -9,11 +9,20 @@ class php::config {
     }
 
     $version = $name
-    $short_version = regsubst($version, '\.', '')
 
-    $conf_dir = $version ? {
-      '5.3' => $php::params::conf_dir_53,
-      '5.4' => $php::params::conf_dir_54,
+    case $version {
+      '5.3': {
+        include php::params::53
+
+        $short_version = '53'
+        $conf_dir      = $php::params::53::conf_dir
+      }
+      '5.4': {
+        include php::params::54
+
+        $short_version = '54'
+        $conf_dir      = $php::params::54::conf_dir
+      }
     }
 
     file { "${conf_dir}":
