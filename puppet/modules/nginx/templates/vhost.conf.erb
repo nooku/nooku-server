@@ -1,8 +1,35 @@
 server {
   listen 80;
-  server_name <%= name %> www.<%= name %> 53.<%= name %>;
+  server_name <%= name %> www.<%= name %> 54.<%= name %>;
 
-  root <%= www_root %>;
+  root /var/www/<%= name %>/public;
+
+  set $root $document_root;
+  set $application_root $root/application;
+
+  access_log /var/log/nginx/<%= name %>.access.log;
+  error_log  /var/log/nginx/<%= name %>.error.log;
+
+  include nooku.inc;
+
+  location ~* ^/application/(.*)/public/index.php$ {
+    try_files $uri = 404;
+
+    fastcgi_pass  unix:/var/run/php54-fpm.sock;
+    fastcgi_index index.php;
+
+    fastcgi_param PHP_ADMIN_VALUE "error_log = /var/log/nginx/<%= name %>.error.log";
+    fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+
+    include fastcgi_params;
+  }
+}
+
+server {
+  listen 80;
+  server_name 53.<%= name %>;
+
+  root /var/www/<%= name %>/public;
 
   set $root $document_root;
   set $application_root $root/application;
@@ -17,6 +44,8 @@ server {
 
     fastcgi_pass  unix:/var/run/php53-fpm.sock;
     fastcgi_index index.php;
+
+    fastcgi_param PHP_ADMIN_VALUE "error_log = /var/log/nginx/<%= name %>.error.log";
     fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
 
     include fastcgi_params;
@@ -25,19 +54,40 @@ server {
 
 server {
   listen 80;
-  server_name 54.<%= name %>;
+  server_name access.<%= name %>;
 
-  root <%= www_root %>;
+  root /var/www/<%= name %>/private/access;
+  index index.php;
 
-  set $root $document_root;
-  set $application_root $root/application;
+  location = /favicon.ico {
+    access_log off;
+    log_not_found off;
+  }
 
-  access_log /var/log/nginx/<%= name %>.access.log;
-  error_log  /var/log/nginx/<%= name %>.error.log;
+  location ~ \.php$ {
+    try_files $uri = 404;
 
-  include nooku.inc;
+    fastcgi_pass  unix:/var/run/php54-fpm.sock;
+    fastcgi_index index.php;
+    fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
 
-  location ~* ^/application/(.*)/public/index.php$ {
+    include fastcgi_params;
+  }
+}
+
+server {
+  listen 80;
+  server_name error.<%= name %>;
+
+  root /var/www/<%= name %>/private/error;
+  index index.php;
+
+  location = /favicon.ico {
+    access_log off;
+    log_not_found off;
+  }
+
+  location ~ \.php$ {
     try_files $uri = 404;
 
     fastcgi_pass  unix:/var/run/php54-fpm.sock;

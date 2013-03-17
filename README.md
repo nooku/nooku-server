@@ -4,7 +4,7 @@ Vagrant uses Oracle’s VirtualBox to build configurable, lightweight, and porta
 
 1. Download and install [VirtualBox](https://www.virtualbox.org/wiki/Downloads). Nothing else needs to be done, you even don't need to open it after install, Vagrant uses the command line interface of VirtualBox.
 
-2. Download and install [Vagrant](http://docs.vagrantup.com/v1/docs/getting-started/index.html).
+2. Download and install [Vagrant](http://docs.vagrantup.com/v2/installation/index.html).
 
 # Configuration
 
@@ -31,7 +31,7 @@ Vagrant assigns the IP `192.168.50.10` to the virtual machine. Nginx uses name-b
 
 1. Open /etc/hosts on your local system and add the domain names and to it:
 
-        192.168.50.10   nooku.dev www.nooku.dev 53.nooku.dev 54.nooku.dev
+        192.168.50.10   nooku.dev www.nooku.dev 53.nooku.dev 54.nooku.dev access.nooku.dev error.nooku.dev
 
 2. Flush the cache:
 
@@ -49,11 +49,11 @@ To access the database, create a standard connection with the IP `192.168.50.10`
 
 ## Versions
 
-Nooku Server has multiple PHP version support, currently supported versions are 5.3 and 5.4. These can be used at the same time. This is setup allows you to test the application under both PHP versions. The main domain (for example `nooku.dev`) is configured to use PHP 5.3. Nginx automatically creates two subdomains: `53.nooku.dev` and `54.nooku.dev`. `53.nooku.dev` is actually the same as `nooku.dev`. `54.nooku.dev` however uses PHP 5.4.
+Nooku Server has multiple PHP version support, currently supported versions are 5.3 and 5.4. These can be used at the same time. This is setup allows you to test the application under both PHP versions. The main domain (for example `nooku.dev`) is configured to use PHP 5.4. Nginx automatically creates two subdomains: `53.nooku.dev` and `54.nooku.dev`. `54.nooku.dev` is actually the same as `nooku.dev`. `53.nooku.dev` however uses PHP 5.3.
 
 ## Developer tools
 
-PHPunit and Composer are also installed on the system. They can be found in `/usr/local/php53/bin` and `/usr/local/php54/bin`.
+PHPunit, Composer and PHP Analyzer are also installed on the system. Executables can be found in `/usr/bin`.
 
 ## Xdebug
 

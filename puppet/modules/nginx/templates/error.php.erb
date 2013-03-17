@@ -1,0 +1,10 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Error log</title>
+  </head>
+  <body>
+    <pre><?php echo shell_exec('tail -n 50 /var/log/nginx/<%= name %>.error.log') ?></pre>
+  </body>
+</html>

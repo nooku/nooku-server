@@ -14,10 +14,6 @@ node server {
   include nginx
   include php
   include percona
-  include git
-  include subversion
-  include zip
-  include vim
   include less
 }
 
