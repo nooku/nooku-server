@@ -49,7 +49,7 @@ module NookuServer
       @data ||= parse
     end
 
-    def share_folders
+    def synced_folders
       folders = []
 
       data.each do |host, settings|
