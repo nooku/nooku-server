@@ -5,6 +5,6 @@
     <title>Access log</title>
   </head>
   <body>
-    <pre><?php echo shell_exec('tail -n 50 /var/log/nginx/<%= name %>.access.log') ?></pre>
+    <pre><?php echo shell_exec('tail -n 50 /var/log/nginx/<%= domain %>.access.log') ?></pre>
   </body>
 </html>

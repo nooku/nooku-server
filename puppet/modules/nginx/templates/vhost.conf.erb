@@ -1,14 +1,14 @@
 server {
   listen 80;
-  server_name <%= name %> www.<%= name %> 54.<%= name %>;
+  server_name <%= domain %> www.<%= domain %> 54.<%= domain %>;
 
-  root /var/www/<%= name %>/public;
+  root /var/www/<%= domain %>/public;
 
   set $root $document_root;
   set $application_root $root/application;
 
-  access_log /var/log/nginx/<%= name %>.access.log;
-  error_log  /var/log/nginx/<%= name %>.error.log;
+  access_log /var/log/nginx/<%= domain %>.access.log;
+  error_log  /var/log/nginx/<%= domain %>.error.log;
 
   include nooku.inc;
 
@@ -18,7 +18,7 @@ server {
     fastcgi_pass  unix:/var/run/php54-fpm.sock;
     fastcgi_index index.php;
 
-    fastcgi_param PHP_ADMIN_VALUE "error_log = /var/log/nginx/<%= name %>.error.log";
+    fastcgi_param PHP_ADMIN_VALUE "error_log = /var/log/nginx/<%= domain %>.error.log";
     fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
 
     include fastcgi_params;
@@ -27,15 +27,15 @@ server {
 
 server {
   listen 80;
-  server_name 53.<%= name %>;
+  server_name 53.<%= domain %>;
 
-  root /var/www/<%= name %>/public;
+  root /var/www/<%= domain %>/public;
 
   set $root $document_root;
   set $application_root $root/application;
 
-  access_log /var/log/nginx/<%= name %>.access.log;
-  error_log  /var/log/nginx/<%= name %>.error.log;
+  access_log /var/log/nginx/<%= domain %>.access.log;
+  error_log  /var/log/nginx/<%= domain %>.error.log;
 
   include nooku.inc;
 
@@ -45,7 +45,7 @@ server {
     fastcgi_pass  unix:/var/run/php53-fpm.sock;
     fastcgi_index index.php;
 
-    fastcgi_param PHP_ADMIN_VALUE "error_log = /var/log/nginx/<%= name %>.error.log";
+    fastcgi_param PHP_ADMIN_VALUE "error_log = /var/log/nginx/<%= domain %>.error.log";
     fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
 
     include fastcgi_params;
@@ -54,9 +54,9 @@ server {
 
 server {
   listen 80;
-  server_name access.<%= name %>;
+  server_name access.<%= domain %>;
 
-  root /var/www/<%= name %>/private/access;
+  root /var/www/<%= domain %>/private/access;
   index index.php;
 
   location = /favicon.ico {
@@ -77,9 +77,9 @@ server {
 
 server {
   listen 80;
-  server_name error.<%= name %>;
+  server_name error.<%= domain %>;
 
-  root /var/www/<%= name %>/private/error;
+  root /var/www/<%= domain %>/private/error;
   index index.php;
 
   location = /favicon.ico {
