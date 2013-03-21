@@ -4,6 +4,7 @@ nooku.dev: # required
   sql:
     nooku: [ install/mysql/schema.sql, install/mysql/data.sql, install/mysql/sample.sql ]
   less:
+    application/admin/public/theme/bootstrap/less: application/admin/public/theme/bootstrap/css
     application/site/public/theme/bootstrap/less: application/site/public/theme/bootstrap/css
 
 custom.dev:
