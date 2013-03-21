@@ -5,7 +5,7 @@ class php::webgrind {
     mode  => '0644',
   }
 
-  $domain = 'webgrind.nooku.dev'
+  $domain = 'webgrind.nooku.vagrant'
 
   exec { 'php-download-webgrind':
     cwd     => '/tmp',
@@ -29,6 +29,6 @@ class php::webgrind {
   exec { 'php-move-webgrind':
     command => "cp -r /tmp/webgrind/* /var/www/${domain}/source/",
     creates => "/var/www/${domain}/source/index.php",
-    require => [ Exec['php-extract-webgrind'], File['/var/www/webgrind.nooku.dev/source'] ],
+    require => [ Exec['php-extract-webgrind'], File['/var/www/webgrind.nooku.vagrant/source'] ],
   }
 }

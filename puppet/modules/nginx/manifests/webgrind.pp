@@ -7,7 +7,7 @@ class nginx::webgrind {
     mode  => '0644',
   }
 
-  $domain = 'webgrind.nooku.dev'
+  $domain = 'webgrind.nooku.vagrant'
 
   file { "${nginx::params::conf_dir}/sites-available/${domain}.conf":
     ensure  => file,

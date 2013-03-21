@@ -1,5 +1,5 @@
 ---
-nooku.dev: # required
+nooku.vagrant: # required
   dir: ~/Workspace/nooku-framework
   sql:
     nooku: [ install/mysql/schema.sql, install/mysql/data.sql, install/mysql/sample.sql ]
