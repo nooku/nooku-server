@@ -31,7 +31,7 @@ Vagrant assigns the IP `192.168.50.10` to the virtual machine. Nginx uses name-b
 
 1. Open /etc/hosts on your local system and add the domain names and to it:
 
-        192.168.50.10   nooku.vagrant www.nooku.vagrant 53.nooku.vagrant 54.nooku.vagrant access.nooku.vagrant error.nooku.vagrant
+        192.168.50.10   nooku.vagrant www.nooku.vagrant 53.nooku.vagrant 54.nooku.vagrant access.nooku.vagrant error.nooku.vagrant webgrind.nooku.vagrant
 
 2. Flush the cache:
 
