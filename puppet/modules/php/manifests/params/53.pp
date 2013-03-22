@@ -1,5 +1,7 @@
 class php::params::53 {
   $xdebug   = '/usr/local/php53/lib/php/extensions/no-debug-non-zts-20090626/xdebug.so'
+  $yaml     = '/usr/local/php53/lib/php/extensions/no-debug-non-zts-20090626/yaml.so'
+
   $conf_dir = '/etc/php53'
 
   $configure = "\

@@ -9,6 +9,7 @@ define php::install::source() {
       $short_version = '53'
       $configure     = $php::params::53::configure
       $xdebug        = $php::params::53::xdebug
+      $yaml          = $php::params::53::yaml
     }
     /^5\.4/: {
       include php::params::54
@@ -16,6 +17,7 @@ define php::install::source() {
       $short_version = '54'
       $configure     = $php::params::54::configure
       $xdebug        = $php::params::54::xdebug
+      $yaml          = $php::params::54::yaml
     }
   }
 
@@ -65,6 +67,15 @@ define php::install::source() {
     command => 'pecl install xdebug',
     path    => [ "/usr/local/php${short_version}/bin", '/bin/', '/sbin/', '/usr/bin/', '/usr/sbin/' ],
     creates => $xdebug,
+    timeout => 0,
+    require => Exec["make-install-${version}"],
+  }
+
+  exec { "install-yaml-${version}":
+    cwd     => "/usr/local/php${short_version}/bin",
+    command => 'pecl install yaml',
+    path    => [ "/usr/local/php${short_version}/bin", '/bin/', '/sbin/', '/usr/bin/', '/usr/sbin/' ],
+    creates => $yaml,
     timeout => 0,
     require => Exec["make-install-${version}"],
   }

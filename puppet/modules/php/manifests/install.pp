@@ -21,7 +21,8 @@ class php::install {
     'libsnmp-dev',
     'libtidy-dev',
     'libxslt1-dev',
-    'libmcrypt-dev'
+    'libmcrypt-dev',
+    'libyaml-dev',
   ]
 
   @package { $packages:
@@ -85,7 +86,7 @@ class php::install {
     command => 'pear channel-discover pear.phpunit.de',
     creates => "${php_bin}/phpunit",
     timeout => 0,
-    require => File['/usr/bin/php', '/usr/bin/pear'],
+    require => Exec['pear-upgrade-all'],
   }
 
   exec { 'pear-discover-symfony':
@@ -99,7 +100,7 @@ class php::install {
     command => 'pear channel-discover components.ez.no',
     creates => "${php_bin}/phpunit",
     timeout => 0,
-    require => File['/usr/bin/php', '/usr/bin/pear'],
+    require => Exec['pear-upgrade-all'],
   }
 
   exec { 'pear-install-phpunit':
