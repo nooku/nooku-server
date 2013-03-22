@@ -1,5 +1,7 @@
 class php::params::54 {
   $xdebug   = '/usr/local/php54/lib/php/extensions/no-debug-non-zts-20100525/xdebug.so'
+  $yaml     = '/usr/local/php54/lib/php/extensions/no-debug-non-zts-20100525/yaml.so'
+
   $conf_dir = '/etc/php54'
 
   $configure = "\

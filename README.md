@@ -12,14 +12,14 @@ The Vagrant box uses a YAML configuration file to create hosts. A sample configu
 
 
     ---
-    nooku.dev: # required
+    nooku.vagrant: # required
       dir: ~/Workspace/nooku-framework
       sql:
         nooku: [ install/mysql/schema.sql, install/mysql/data.sql, install/mysql/sample.sql ]
       less:
         application/site/public/theme/bootstrap/less: application/site/public/theme/bootstrap/css
 
-Create an empty `config.yaml` file in the `config` directory and add the hosts you want to use. Any number of hosts can be added, but there must be at least one host with the name `nooku.dev`. The first line is the domain name.  The first parameter `dir` is the path to the local directory on the host system. Path will be expanded, so shortcuts like `~` can be used.
+Create an empty `config.yaml` file in the `config` directory and add the hosts you want to use. Any number of hosts can be added, but there must be at least one host with the name `nooku.vagrant`. The first line is the domain name.  The first parameter `dir` is the path to the local directory on the host system. Path will be expanded, so shortcuts like `~` can be used.
 
 The second parameter `sql` is for database setup. This parameter is optional. If provided, the script will create the databases on each `vagrant up` and import the specified SQL files. The first word in the line under `sql` is the name of the database, followed by an array of SQL files to be imported. SQL files are optional, an empty array `[]` should be used in that case. Any number of databases can be specified under `sql`.
 
@@ -31,13 +31,13 @@ Vagrant assigns the IP `192.168.50.10` to the virtual machine. Nginx uses name-b
 
 1. Open /etc/hosts on your local system and add the domain names and to it:
 
-        192.168.50.10   nooku.dev www.nooku.dev 53.nooku.dev 54.nooku.dev access.nooku.dev error.nooku.dev
+        192.168.50.10   nooku.vagrant www.nooku.vagrant 53.nooku.vagrant 54.nooku.vagrant access.nooku.vagrant error.nooku.vagrant
 
 2. Flush the cache:
 
         dscacheutil -flushcache
 
-After this you can access the site at `http://nooku.dev/` (or whatever domain you chose).
+After this you can access the site at `http://nooku.vagrant/` (or whatever domain you chose).
 
 # Usage
 
@@ -49,7 +49,7 @@ To access the database, create a standard connection with the IP `192.168.50.10`
 
 ## Versions
 
-Nooku Server has multiple PHP version support, currently supported versions are 5.3 and 5.4. These can be used at the same time. This is setup allows you to test the application under both PHP versions. The main domain (for example `nooku.dev`) is configured to use PHP 5.4. Nginx automatically creates two subdomains: `53.nooku.dev` and `54.nooku.dev`. `54.nooku.dev` is actually the same as `nooku.dev`. `53.nooku.dev` however uses PHP 5.3.
+Nooku Server has multiple PHP version support, currently supported versions are 5.3 and 5.4. These can be used at the same time. This is setup allows you to test the application under both PHP versions. The main domain (for example `nooku.vagrant`) is configured to use PHP 5.4. Nginx automatically creates two subdomains: `53.nooku.vagrant` and `54.nooku.vagrant`. `54.nooku.vagrant` is actually the same as `nooku.vagrant`. `53.nooku.vagrant` however uses PHP 5.3.
 
 ## Developer tools
 

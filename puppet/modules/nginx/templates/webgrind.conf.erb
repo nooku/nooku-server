@@ -1,0 +1,22 @@
+server {
+  listen 80;
+  server_name <%= domain %>;
+
+  root /var/www/<%= domain %>/public;
+  index index.php;
+
+  location = /favicon.ico {
+    access_log off;
+    log_not_found off;
+  }
+
+  location ~ \.php$ {
+    try_files $uri = 404;
+
+    fastcgi_pass  unix:/var/run/php54-fpm.sock;
+    fastcgi_index index.php;
+    fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+
+    include fastcgi_params;
+  }
+}

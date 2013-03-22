@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.0.1 (22 Mar 2013):
+- 273: Use nooku.vagrant as default hostname instead of nooku.dev.
+- 272: Add Webgrind (available at webgrind.nooku.vagrant).
+- 274: Add YAML extension to PHP.
+
 ## 2.0.0 (18 Mar 2013):
 
 - 258: Replace Chef provisioning by Puppet. Add multiple host support.

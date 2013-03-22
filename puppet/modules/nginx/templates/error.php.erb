@@ -5,6 +5,6 @@
     <title>Error log</title>
   </head>
   <body>
-    <pre><?php echo shell_exec('tail -n 50 /var/log/nginx/<%= name %>.error.log') ?></pre>
+    <pre><?php echo shell_exec('tail -n 50 /var/log/nginx/<%= domain %>.error.log') ?></pre>
   </body>
 </html>

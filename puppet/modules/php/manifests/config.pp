@@ -61,6 +61,13 @@ class php::config {
       require => File["${conf_dir}/conf.d"],
     }
 
+    file { "${conf_dir}/conf.d/yaml.ini":
+      ensure  => file,
+      content => template("php/${version}/yaml.ini.erb"),
+      notify  => Class['php::service'],
+      require => File["${conf_dir}/conf.d"],
+    }
+
     file { "/etc/init.d/php${short_version}-fpm":
       ensure  => file,
       content => template("php/${version}/php-fpm.init.erb"),
