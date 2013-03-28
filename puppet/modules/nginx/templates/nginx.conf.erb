@@ -1,48 +1,26 @@
-location = /robots.txt {
-  access_log off;
-  log_not_found off;
+user www-data;
+worker_processes 4;
+
+error_log /var/log/nginx/error.log warn;
+pid /var/run/nginx.pid;
+
+events {
+  worker_connections 768;
 }
 
-location = /favicon.ico {
-  access_log off;
-  log_not_found off;
-}
+http {
+  sendfile on;
+  tcp_nopush on;
+  tcp_nodelay on;
+  keepalive_timeout 65;
+  types_hash_max_size 2048;
 
-# prevent hidden files (beginning with a period) from being served
-location ~ /\. {
-  access_log off;
-  log_not_found off;
-  deny all;
-}
+  include /etc/nginx/mime.types;
+  default_type application/octet-stream;
 
-location / {
-  rewrite ^ /application/site/public/index.php last;
-}
+  gzip on;
+  gzip_disable "msie6";
 
-location /administrator {
-	rewrite ^ /application/admin/public/index.php last;
-}
-
-location /theme/ {
-	alias $application_root/site/public/theme/;
-}
-
-location /administrator/theme/ {
-	alias $application_root/admin/public/theme/;
-}
-
-location ~ /media/(images|css|js)/(.*)$ {
-	alias $root/library/resources/media/$1/$2;
-}
-
-location ~ /administrator/media/([_a-z-]+)/(.*)$ {
-	try_files /application/admin/component/$1/resources/media/$2 /component/$1/resources/media/$2 =404;
-}
-
-location ~ /media/([_a-z-]+)/(.*)$ {
-	try_files /application/site/component/$1/resources/media/$2 /component/$1/resources/media/$2 =404;
-}
-
-location ~ /files/([_0-9a-zA-Z-]+)/(.*)$ {
-	alias $root/sites/$1/files/$2;
+  include /etc/nginx/conf.d/*.conf;
+  include /etc/nginx/sites-enabled/*;
 }
