@@ -10,11 +10,4 @@ class { 'ubuntu':
   stage => 'first',
 }
 
-node server {
-  include nginx
-  include php
-  include percona
-  include less
-}
-
 import 'nodes/*'
