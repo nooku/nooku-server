@@ -1,15 +1,21 @@
-node '<%= name %>' inherits server {
-  nginx::resource::vhost { '<%= name %>':
-    public_dir => '<%= public_dir %>',
+node 'nooku.vagrant' {
+  include nginx
+  include php
+  include percona
+  include less
+
+  <%- hosts.each do |host, settings| -%>
+  nginx::resource::vhost { '<%= host %>':
+    public_dir => '<%= settings[:public_dir] %>',
   }
 
-  <%- if defined?(sql) -%><%- sql.each do |database, files| -%>
+  <%- if defined?(settings[:sql]) -%><%- settings[:sql].each do |database, files| -%>
   percona::resource::database { '<%= database %>': }
   <%- previous = '' -%>
   <%- files.each do |file| %>
   percona::resource::import { '<%= database %>:<%= file %>':
     database => '<%= database %>',
-    file     => '/var/www/<%= name %>/source/<%= file %>',
+    file     => '/var/www/<%= host %>/source/<%= file %>',
     <%- unless previous.empty? -%>
     require  => Exec['import-sql-<%= previous %>'],
     <%- end -%>
@@ -18,10 +24,11 @@ node '<%= name %>' inherits server {
   <%- end -%>
   <%- end -%><%- end -%>
 
-  <%- if defined?(less) -%><%- less.each do |source, destination| -%>
-  less::resource::watcher { '<%= name %>:<%= source %>':
-    source      => '/var/www/<%= name %>/source/<%= source %>',
-    destination => '/var/www/<%= name %>/source/<%= destination %>',
+  <%- if defined?(settings[:less]) -%><%- settings[:less].each do |source, destination| -%>
+  less::resource::watcher { '<%= host %>:<%= source %>':
+    source      => '/var/www/<%= host %>/source/<%= source %>',
+    destination => '/var/www/<%= host %>/source/<%= destination %>',
   }
   <%- end -%><%- end -%>
+  <%- end %>
 }
