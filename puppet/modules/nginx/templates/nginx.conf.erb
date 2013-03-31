@@ -23,4 +23,11 @@ http {
 
   include /etc/nginx/conf.d/*.conf;
   include /etc/nginx/sites-enabled/*;
+
+  # These are important for callstack pages, to avoid a 502
+  proxy_buffers 8 16k;
+  proxy_buffer_size 32k;
+
+  fastcgi_buffers 16 16k;
+  fastcgi_buffer_size 32k;
 }
