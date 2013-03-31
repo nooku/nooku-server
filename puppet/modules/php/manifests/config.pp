@@ -1,6 +1,12 @@
 class php::config {
   $require = Class['php::install::php', 'php::install::xdebug', 'php::install::yaml']
 
+  File {
+    owner => 'root',
+    group => 'root',
+    mode  => '0644',
+  }
+
   file { '/etc/php-5.3':
     ensure  => directory,
     require => $require,

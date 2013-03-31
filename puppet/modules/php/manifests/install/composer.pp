@@ -1,6 +1,12 @@
 class php::install::composer {
   $require = Class['php::install::php']
 
+  File {
+    owner => 'root',
+    group => 'root',
+    mode  => '0644',
+  }
+
   exec { 'php-install-composer':
     cwd     => "/opt/phpfarm/inst/current-bin",
     command => 'curl -s https://getcomposer.org/installer | php',
