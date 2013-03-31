@@ -1,5 +1,5 @@
 class php::config {
-  $require = Class['php::install::php']
+  $require = Class['php::install::php', 'php::install::xdebug', 'php::install::yaml']
 
   file { '/etc/php-5.3':
     ensure  => directory,
