@@ -11,7 +11,7 @@ class nginx::webgrind {
 
   file { "${nginx::params::conf_dir}/sites-available/${domain}.conf":
     ensure  => file,
-    content => template('nginx/webgrind.conf.erb'),
+    source => 'puppet:///modules/nginx/etc/nginx/sites-available/webgrind.conf',
     notify  => Class['nginx::service'],
   }
 

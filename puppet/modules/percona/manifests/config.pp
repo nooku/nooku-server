@@ -9,7 +9,7 @@ class percona::config {
 
   file { '/etc/mysql/my.cnf':
     ensure  => file,
-    content => template('percona/my.cnf.erb'),
+    source => 'puppet:///modules/percona/etc/mysql/my.cnf',
     notify  => Class['percona::service'],
     require => $require,
   }

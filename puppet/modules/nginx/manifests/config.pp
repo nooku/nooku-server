@@ -31,7 +31,7 @@ class nginx::config {
 
   file { "${nginx::params::conf_dir}/nginx.conf":
     ensure  => file,
-    content => template('nginx/nginx.conf.erb'),
+    source => 'puppet:///modules/nginx/etc/nginx/nginx.conf',
     notify  => Class['nginx::service'],
     require => File["${nginx::params::conf_dir}"],
   }
