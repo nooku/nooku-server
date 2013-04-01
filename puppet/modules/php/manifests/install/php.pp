@@ -1,10 +1,4 @@
 class php::install::php {
-  File {
-    owner => 'root',
-    group => 'root',
-    mode  => '0644',
-  }
-
   $php_version_53 = '5.3.23'
   $php_version_54 = '5.4.13'
 

@@ -1,12 +1,6 @@
 class php::install::phpunit {
   $require = Class['php::install::php']
 
-  File {
-    owner => 'root',
-    group => 'root',
-    mode  => '0644',
-  }
-
   exec { 'php-discover-phpunit':
     command => 'pyrus channel-discover pear.phpunit.de',
     creates => "/opt/phpfarm/inst/current-bin/phpunit",

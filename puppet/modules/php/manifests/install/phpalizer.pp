@@ -1,12 +1,6 @@
 class php::install::phpalizer {
   $require = Class['php::install::composer']
 
-  File {
-    owner => 'root',
-    group => 'root',
-    mode  => '0644',
-  }
-
   exec { 'php-install-phpalizer':
     cwd     => '/opt',
     command => 'composer create-project scrutinizer/php-analyzer:dev-master',
