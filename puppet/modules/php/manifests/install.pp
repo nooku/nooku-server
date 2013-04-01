@@ -5,5 +5,4 @@ class php::install {
   include php::install::composer
   include php::install::phpunit
   include php::install::phpalizer
-  include php::install::webgrind
 }

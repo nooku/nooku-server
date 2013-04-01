@@ -1,4 +1,4 @@
-class php::install::webgrind {
+class php::webgrind {
   File {
     owner => 'root',
     group => 'root',
