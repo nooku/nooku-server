@@ -15,7 +15,7 @@ server {
   location ~* ^/application/(.*)/public/index.php$ {
     try_files $uri = 404;
 
-    fastcgi_pass  unix:/var/run/php-fastcgi/php-fastcgi-5.4.socket;
+    fastcgi_pass  unix:/var/run/php54-fpm.sock;
     fastcgi_index index.php;
 
     fastcgi_param PHP_ADMIN_VALUE "error_log = /var/log/nginx/<%= domain %>.error.log";
@@ -42,7 +42,7 @@ server {
   location ~* ^/application/(.*)/public/index.php$ {
     try_files $uri = 404;
 
-    fastcgi_pass  unix:/var/run/php-fastcgi/php-fastcgi-5.3.socket;
+    fastcgi_pass  unix:/var/run/php53-fpm.sock;
     fastcgi_index index.php;
 
     fastcgi_param PHP_ADMIN_VALUE "error_log = /var/log/nginx/<%= domain %>.error.log";
@@ -67,7 +67,7 @@ server {
   location ~ \.php$ {
     try_files $uri = 404;
 
-    fastcgi_pass  unix:/var/run/php-fastcgi/php-fastcgi-5.4.socket;
+    fastcgi_pass  unix:/var/run/php54-fpm.sock;
     fastcgi_index index.php;
     fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
 
@@ -90,7 +90,7 @@ server {
   location ~ \.php$ {
     try_files $uri = 404;
 
-    fastcgi_pass  unix:/var/run/php-fastcgi/php-fastcgi-5.4.socket;
+    fastcgi_pass  unix:/var/run/php54-fpm.sock;
     fastcgi_index index.php;
     fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
 
