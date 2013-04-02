@@ -10,9 +10,9 @@
 # Description:       starts the PHP FastCGI Process Manager daemon
 ### END INIT INFO
 
-php_fpm_BIN=/usr/local/php54/sbin/php-fpm
-php_fpm_CONF=/etc/php54/php-fpm.conf
-php_fpm_PID=/var/run/php54-fpm.pid
+php_fpm_BIN=/usr/local/php-5.4.13/sbin/php-fpm
+php_fpm_CONF=/etc/php-5.4/php-fpm.conf
+php_fpm_PID=/var/run/php-fpm/php-fpm-5.4.pid
 
 
 php_opts="--fpm-config $php_fpm_CONF --pid $php_fpm_PID"
