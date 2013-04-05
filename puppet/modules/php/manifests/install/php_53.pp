@@ -92,7 +92,7 @@ class php::install::php_53 {
     cwd     => "/usr/local/php-${version}/bin",
     path    => [ "/usr/local/php-${version}/bin", '/bin/', '/sbin/', '/usr/bin/', '/usr/sbin/' ],
     command => 'pecl install xdebug',
-    creates => '/usr/local/php-${version}/lib/php/extensions/no-debug-non-zts-20090626/xdebug.so',
+    creates => "/usr/local/php-${version}/lib/php/extensions/no-debug-non-zts-20090626/xdebug.so",
     timeout => 0,
     require => Exec['php-make-install-5.3'],
   }
@@ -101,7 +101,7 @@ class php::install::php_53 {
     cwd     => "/usr/local/php-${version}/bin",
     path    => [ "/usr/local/php-${version}/bin", '/bin/', '/sbin/', '/usr/bin/', '/usr/sbin/' ],
     command => 'pecl install yaml',
-    creates => '/usr/local/php-${version}/lib/php/extensions/no-debug-non-zts-20090626/yaml.so',
+    creates => "/usr/local/php-${version}/lib/php/extensions/no-debug-non-zts-20090626/yaml.so",
     require => Exec['php-make-install-5.3'],
   }
 
