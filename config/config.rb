@@ -37,7 +37,7 @@ module NookuServer
       node = File.expand_path(File.join(File.dirname(__FILE__), 'templates/node.erb'))
 
       namespace = OpenStruct.new({ :hosts => hosts })
-      File.open(File.join(dir_path, 'nooku.vagrant.pp'), 'w') do |f|
+      File.open(File.expand_path(File.join(dir_path, 'nooku.vagrant.pp')), 'w') do |f|
         f.write ERB.new(File.read(node), nil, '-').result(namespace.instance_eval { binding })
       end
     end
