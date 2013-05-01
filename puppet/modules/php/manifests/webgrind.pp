@@ -10,11 +10,13 @@ class php::webgrind {
   exec { 'php-download-webgrind':
     cwd     => '/tmp',
     command => 'wget https://webgrind.googlecode.com/files/webgrind-release-1.0.zip',
+    creates => "/var/www/${domain}/source/index.php",
   }
 
   exec { 'php-extract-webgrind':
     cwd     => '/tmp',
     command => 'unzip webgrind-release-1.0.zip',
+    creates => "/var/www/${domain}/source/index.php",
     require => Exec['php-download-webgrind'],
   }
 
