@@ -9,8 +9,6 @@ class php::install::php_53 {
     mode  => '0644',
   }
 
-  realize(Package[$php::install::packages])
-
   $version = '5.3.23'
 
   $configure = "\
@@ -69,7 +67,32 @@ class php::install::php_53 {
     path    => [ "/tmp/php-${version}", '/bin/', '/sbin/', '/usr/bin/', '/usr/sbin/' ],
     command => "./configure ${configure}",
     creates => "/usr/local/php-${version}/bin/php",
-    require => [ Exec['php-extract-5.3'], Package[$php::install::packages] ],
+    require => [
+      Exec['php-extract-5.3'],
+      Package['build-essential'],
+      Package['autoconf'],
+      Package['libxml2-dev'],
+      Package['libpcre3-dev'],
+      Package['libbz2-dev'],
+      Package['libcurl4-openssl-dev'],
+      Package['libjpeg-dev'],
+      Package['libpng12-dev'],
+      Package['libxpm-dev'],
+      Package['libfreetype6-dev'],
+      Package['libmysqlclient-dev'],
+      Package['libt1-dev'],
+      Package['libgd2-xpm-dev'],
+      Package['libgmp-dev'],
+      Package['libsasl2-dev'],
+      Package['libmhash-dev'],
+      Package['freetds-dev'],
+      Package['libpspell-dev'],
+      Package['libsnmp-dev'],
+      Package['libtidy-dev'],
+      Package['libxslt1-dev'],
+      Package['libmcrypt-dev'],
+      Package['libyaml-dev'],
+    ],
   }
 
   exec { 'php-make-5.3':

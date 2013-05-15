@@ -20,14 +20,6 @@ class php::webgrind {
     require => Exec['php-download-webgrind'],
   }
 
-  file { "/var/www/${domain}":
-    ensure => directory,
-  }
-
-  file { "/var/www/${domain}/source":
-    ensure => directory,
-  }
-
   exec { 'php-move-webgrind':
     command => "cp -r /tmp/webgrind/* /var/www/${domain}/source/",
     creates => "/var/www/${domain}/source/index.php",
