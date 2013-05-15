@@ -87,6 +87,12 @@ class nginx::config {
 
   file { '/etc/init.d/nginx':
     ensure  => file,
+    mode    => '0755',
     source  => 'puppet:///modules/nginx/etc/init.d/nginx',
+  }
+
+  file { '/var/log/nginx':
+    ensure => directory,
+    mode   => '0755',
   }
 }
