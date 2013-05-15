@@ -1,5 +1,4 @@
 require 'erb'
-require 'json'
 require 'ostruct'
 require 'yaml'
 
@@ -26,22 +25,20 @@ module NookuServer
       dir_path = File.expand_path(File.join(File.dirname(__FILE__), '../puppet/manifests/nodes'))
       Dir.foreach(dir_path) { |f| fn = File.join(dir_path, f); File.delete(fn) if f.chars.first != '.' }
 
-      # Create nodes from node.erb.
+      hosts = {}
+      data.each do |host, settings|
+        hosts[host] = {}
+        hosts[host][:public_dir] = (File.directory?(File.expand_path(File.join(settings['dir'], 'code')))) ? '/code' : '/'
+        hosts[host][:sql]  = settings['sql'] if settings.has_key?('sql')
+        hosts[host][:less] = settings['less'] if settings.has_key?('less')
+      end
+
+      # Create node from node.erb.
       node = File.expand_path(File.join(File.dirname(__FILE__), 'templates/node.erb'))
 
-      data.each do |host,settings|
-        vars = {
-          :name       => host,
-          :public_dir => (File.directory?(File.expand_path(File.join(settings['dir'], 'code')))) ? '/code' : '/',
-        }
-
-        vars[:sql]  = settings['sql'] if settings.has_key?('sql')
-        vars[:less] = settings['less'] if settings.has_key?('less')
-
-        namespace = OpenStruct.new(vars)
-        File.open(File.join(dir_path, File.basename(host, File.extname(host)) << '.pp'), 'w') do |f|
-          f.write ERB.new(File.read(node), nil, '-').result(namespace.instance_eval { binding })
-        end
+      namespace = OpenStruct.new({ :hosts => hosts })
+      File.open(File.expand_path(File.join(dir_path, 'nooku.vagrant.pp')), 'w') do |f|
+        f.write ERB.new(File.read(node), nil, '-').result(namespace.instance_eval { binding })
       end
     end
 

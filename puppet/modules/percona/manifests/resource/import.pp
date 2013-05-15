@@ -3,7 +3,7 @@ define percona::resource::import(
   $file     = undef,
 ) {
   exec { "import-sql-${name}":
-    command => "sed 's/#__/nf_/g' '${file}' | mysql --user='root' --password='root' '${database}'",
+    command => "mysql --user='root' --password='root' '${database}' < '${file}'",
     timeout => 0,
     require => Exec["create-database-${database}"],
   }

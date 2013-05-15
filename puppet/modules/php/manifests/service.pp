@@ -1,7 +1,7 @@
 class php::service {
-  $require = Class['php::config']
+  $require = Anchor['php::config']
 
-  service { ['php53-fpm', 'php54-fpm']:
+  service { ['php-fpm-5.3', 'php-fpm-5.4']:
     ensure     => running,
     hasstatus  => false,
     hasrestart => true,
