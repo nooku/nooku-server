@@ -1,6 +1,8 @@
 class nginx::webgrind {
   include nginx::params
 
+  $require = Class['nginx::config']
+
   File {
     owner => 'root',
     group => 'root',
@@ -12,6 +14,7 @@ class nginx::webgrind {
   file { "${nginx::params::conf_dir}/sites-available/${domain}.conf":
     ensure  => file,
     content => template('nginx/webgrind.conf.erb'),
+    require => $require,
     notify  => Class['nginx::service'],
   }
 
@@ -22,8 +25,17 @@ class nginx::webgrind {
      require => File["${nginx::params::conf_dir}/sites-available/${domain}.conf"],
   }
 
+  file { "/var/www/${domain}":
+    ensure => directory,
+  }
+
+  file { "/var/www/${domain}/source":
+    ensure => directory,
+  }
+
   file { "/var/www/${domain}/public":
-    ensure => link,
-    target => "/var/www/${domain}/source",
+    ensure  => link,
+    target  => "/var/www/${domain}/source",
+    require => File["/var/www/${domain}/source"]
   }
 }

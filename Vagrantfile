@@ -1,5 +1,11 @@
 require File.expand_path(File.join(File.dirname(__FILE__), 'config/config.rb'))
 
+def Kernel.is_windows?
+    # Detect if we are running on Windows
+    processor, platform, *rest = RUBY_PLATFORM.split("-")
+    platform == 'mingw32'
+end
+
 Vagrant.configure('2') do |config|
   config.vm.box = 'precise64'
   config.vm.box_url = 'http://files.vagrantup.com/precise64.box'
@@ -15,7 +21,8 @@ Vagrant.configure('2') do |config|
   config_file.create_nodes
 
   config_file.synced_folders.each do |folder|
-    config.vm.synced_folder folder[:path], "/var/www/#{folder[:name]}/source", :nfs => true
+    nfs = !Kernel.is_windows?
+    config.vm.synced_folder folder[:path], "/var/www/#{folder[:name]}/source", :nfs => nfs
   end
 
   config.vm.provision :puppet do |puppet|
