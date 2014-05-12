@@ -1,5 +1,13 @@
 # Changelog
 
+## 3.0.0 (12 May 2013)
+
+- Fixed - PHP-FPM should create the socket as user www-data.
+- Added - Merged vagrant configuration from nooku-framework back into nooku-server.
+- Added - Included the purge.sh script, used for packaging the box.
+- Fixed - Use different VMWare names: nooku-box-build when building the box, nooku-box for plain Nooku Framework use.
+- Improved - Nooku Framework can now download nooku/box instead of building it from scratch.
+
 ## 2.0.1 (22 Mar 2013):
 - 273: Use nooku.vagrant as default hostname instead of nooku.dev.
 - 272: Add Webgrind (available at webgrind.nooku.vagrant).
