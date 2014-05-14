@@ -4,16 +4,11 @@ README
 Building the box
 ----------------
 
-* Clone this repository at [git://git.assembla.com/nooku-framework.git](git://git.assembla.com/nooku-framework.git)
+* Clone this repository from [https://github.com/nooku/nooku-server.git](https://github.com/nooku/nooku-server.git)
 
 ```
-    $ git clone git://git.assembla.com/nooku-framework.git
-```
-
-* Switch to the [develop](https://nooku.assembla.com/code/nooku-framework/git/nodes/develop) branch
-
-```
-    $ git checkout develop
+    $ git clone https://github.com/nooku/nooku-server.git
+    $ cd nooku-server
 ```
 
 * Install [VirtualBox](http://www.virtualbox.org/)
