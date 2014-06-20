@@ -85,4 +85,12 @@ server {
     fastcgi_split_path_info ^(.+\.php)(/.+)$;
     include fastcgi_params;
   }
+
+  location ~ ^/(apc|phpinfo)$ {
+    alias /home/vagrant/scripts/$1.php;
+    
+    fastcgi_pass   unix:/var/run/php5-fpm.sock;
+    include fastcgi_params;
+
+  }
 }
