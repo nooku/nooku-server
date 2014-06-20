@@ -103,6 +103,32 @@ file { '/etc/php5/fpm/pool.d/www.conf':
   notify  => Service['php5-fpm']
 }
 
+class { 'php::pear': }
+
+php::pear::config {
+  download_dir: value => "/tmp/pear/download",
+  require => Class['php::pear']
+}
+
+package { 'libyaml-dev':
+  ensure => present,
+}
+
+php::pecl::module { 'yaml':
+  use_package => no,
+  ensure => present,
+  require => [php::pear::config['download_dir'], Package['libyaml-dev']]
+}
+
+puphpet::ini { 'yaml':
+  value   => [
+    'extension=yaml.so'
+  ],
+  ini     => '/etc/php5/conf.d/zzz_yaml.ini',
+  notify  => Service['php5-fpm'],
+  require => [Class['php'], php::pecl::module['yaml']],
+}
+
 class { 'xdebug':
   service => 'nginx',
 }
