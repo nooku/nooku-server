@@ -1,6 +1,13 @@
 # Changelog
 
-## 3.0.0 (12 May 2013)
+## 3.0.1 (20 Jun 2014)
+
+- Added - Setup the /apc alias to access APC dashboard
+- Added - Included the /phpinfo location as a shortcut to phpinfo();
+- Added - Installed PEAR, PECL
+- Added - Installing the PECL yaml extension by default
+
+## 3.0.0 (12 May 2014)
 
 - Fixed - PHP-FPM should create the socket as user www-data.
 - Added - Merged vagrant configuration from nooku-framework back into nooku-server.
