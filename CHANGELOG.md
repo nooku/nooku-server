@@ -1,11 +1,12 @@
 # Changelog
 
-## 3.0.1 (20 Jun 2014)
+## 3.0.1 (21 Jun 2014)
 
 - Added - Setup the /apc alias to access APC dashboard
 - Added - Included the /phpinfo location as a shortcut to phpinfo();
 - Added - Installed PEAR, PECL
 - Added - Installing the PECL yaml extension by default
+- Improved - Updated Virtualbox guest additions to 4.3.12
 
 ## 3.0.0 (12 May 2014)
 
