@@ -207,7 +207,7 @@ class { 'phpmyadmin':
 nginx::resource::vhost { 'phpmyadmin.nooku.dev':
   ensure      => present,
   server_name => ['phpmyadmin.nooku.dev'],
-  listen_port => 80,
+  listen_port => 8080,
   index_files => ['index.php'],
   www_root    => '/usr/share/phpmyadmin',
   try_files   => ['$uri', '$uri/', '/index.php?$args'],
@@ -249,7 +249,7 @@ class { 'webgrind':
 nginx::resource::vhost { 'webgrind.nooku.dev':
   ensure      => present,
   server_name => ['webgrind.nooku.dev'],
-  listen_port => 80,
+  listen_port => 8080,
   index_files => ['index.php'],
   www_root    => '/usr/share/webgrind',
   try_files   => ['$uri', '$uri/', '/index.php?$args'],
@@ -274,4 +274,10 @@ nginx::resource::location { "webgrind-php":
   },
   notify              => Class['nginx::service'],
   require             => Nginx::Resource::Vhost['webgrind.nooku.dev'],
+}
+
+class {'varnish':
+  version  => '4.*',
+  varnish_listen_port => 80,
+  varnish_storage_size => '150M'
 }
