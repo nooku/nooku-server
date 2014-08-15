@@ -58,6 +58,8 @@ class { 'nginx':
   require => File['/var/cache/nginx/pagespeed']
 }
 
+class {'varnish': }
+
 file { "${nginx::config::nx_temp_dir}/nginx.d/nooku-001":
   ensure  => file,
   content => template('nginx/vhost/nooku.erb'),
@@ -274,10 +276,4 @@ nginx::resource::location { "webgrind-php":
   },
   notify              => Class['nginx::service'],
   require             => Nginx::Resource::Vhost['webgrind.nooku.dev'],
-}
-
-class {'varnish':
-  version  => '4.*',
-  varnish_listen_port => 80,
-  varnish_storage_size => '150M'
 }
