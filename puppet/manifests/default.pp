@@ -127,6 +127,15 @@ php::pear::config {
   require => Class['php::pear']
 }
 
+php::pear::module { 'Console_CommandLine':
+  use_package => false
+}
+
+php::pear::module { 'Phing':
+  use_package => false,
+  repository  => 'pear.phing.info'
+}
+
 package { 'libyaml-dev':
   ensure => present,
 }
