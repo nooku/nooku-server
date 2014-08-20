@@ -43,9 +43,9 @@ To test the new package locally, remove your current box and setup the local ver
     $ vagrant box remove nooku/box
     $ vagrant box add /path/to/nooku.box --name=nooku/box
 	
-Go to your [Nooku Framework](https://github.com/nooku/nooku-framework) clone and test: 
+Go to your [Nooku Platform](https://github.com/nooku/nooku-platform) clone and test: 
 
-    $ cd /path/to/nooku-framework
+    $ cd /path/to/nooku-platform
     $ vagrant destroy # if you've created the box before
     $ vagrant up
 	
