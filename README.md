@@ -26,9 +26,9 @@ Run purge.sh to reduce the VM size:
 
     $ sudo purge.sh
 
-Make sure to remove the Nooku flag: 
+Make sure to remove all flags which should not be set by default: 
 
-    $ rm /nooku-install-run
+    $ rm /nooku-install-run /var/www/default/varnish-enabled
 	
 Ensure the nooku database is removed:
 
