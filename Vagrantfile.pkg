@@ -12,7 +12,7 @@ _default_config = {
 }
 
 begin
-  deep_merge!(_default_config, YAML.load(File.open(File.join(File.dirname(__FILE__), "config.custom.yaml"), File::RDONLY).read))
+  deep_merge!(_default_config, YAML.load(File.open(File.join(Dir.pwd, "config.custom.yaml"), File::RDONLY).read))
 rescue Errno::ENOENT
   # No config.custom.yaml found -- that's OK; just use the defaults.
 end
@@ -23,10 +23,10 @@ Vagrant.configure("2") do |config|
   config.vm.network :private_network, ip: "33.33.33.63"
   config.ssh.forward_agent = true
 
-  if CONF.has_key?('vm_name')
-    config.vm.provider :virtualbox do |v|
+  config.vm.provider :virtualbox do |v|
+     if CONF.has_key?('vm_name')
         v.customize ["modifyvm", :id, "--name", CONF['vm_name']]
-    end
+     end
   end
 
   config.vm.synced_folder ".", "/var/www/nooku.dev", id: "vagrant-root" , :nfs => CONF['nfs']

@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # Author: Adrien Brault <https://gist.github.com/adrienbrault>
 # Source: https://gist.github.com/adrienbrault/3775253
