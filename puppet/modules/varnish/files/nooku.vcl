@@ -11,6 +11,15 @@ backend default {
 }
 
 sub vcl_recv {
+       # Do not cache webgrind.nooku.dev and phpmyadmin.nooku.dev
+        if (req.http.host == "webgrind.nooku.dev") {
+            return (pass);
+        }
+
+        if (req.http.host == "phpmyadmin.nooku.dev") {
+            return (pass);
+        }
+
     	# Forward client's IP to backend
         unset req.http.X-Forwarded-For;
         set req.http.X-Forwarded-For = client.ip;
