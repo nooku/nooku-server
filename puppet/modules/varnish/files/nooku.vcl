@@ -4,19 +4,39 @@ vcl 4.0;
 
 import std;
 
-# Default backend definition. Set this to point to your content server.
+# Setup the health polling probe
+
+
+# Default backend definitions. Set this to point to your content server.
 backend default {
+    .host = "127.0.0.1";
+    .port = "8080";
+    .probe = {
+      .url = "/varnish-enabled";
+      .interval = 1s;
+      .timeout = 1s;
+    }
+}
+
+backend alternative {
     .host = "127.0.0.1";
     .port = "8080";
 }
 
 sub vcl_recv {
-       # Do not cache webgrind.nooku.dev and phpmyadmin.nooku.dev
+        # Do not cache webgrind.nooku.dev and phpmyadmin.nooku.dev
         if (req.http.host == "webgrind.nooku.dev") {
             return (pass);
         }
 
         if (req.http.host == "phpmyadmin.nooku.dev") {
+            return (pass);
+        }
+
+        # Check if we've still enabled Varnish, if not, passthrough every request
+        if (! std.healthy(req.backend_hint))
+        {
+            set req.backend_hint = alternative;
             return (pass);
         }
 

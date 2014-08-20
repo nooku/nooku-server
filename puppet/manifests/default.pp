@@ -39,6 +39,21 @@ package { [
   ensure  => 'installed',
 }
 
+file { '/var/www/':
+  ensure => directory,
+  mode   => '0644',
+  group  => 'root',
+  owner  => 'root'
+}
+
+file { '/var/www/default':
+  ensure => directory,
+  mode   => '0644',
+  group  => 'www-data',
+  owner  => 'www-data',
+  require => File['/var/www']
+}
+
 file { '/var/cache/nginx':
   ensure => directory,
   mode   => '0644',
@@ -234,6 +249,16 @@ nginx::resource::location { "phpmyadmin-php":
   },
   notify              => Class['nginx::service'],
   require             => Nginx::Resource::Vhost['phpmyadmin.nooku.dev'],
+}
+
+nginx::resource::vhost { 'default':
+  ensure      => present,
+  server_name => ['localhost'],
+  listen_port => 8080,
+  listen_options => 'default',
+  index_files => ['index.php', 'index.html'],
+  www_root    => '/var/www/default',
+  require     => File['/var/www/default']
 }
 
 class { 'mailcatcher': }
