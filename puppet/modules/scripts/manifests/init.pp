@@ -4,14 +4,15 @@ class scripts {
 
 class scripts::install {
   file { '/home/vagrant/scripts':
-    source => 'puppet:///modules/scripts/scripts',
-    recurse => true,
+    source   => 'puppet:///modules/scripts/scripts',
+    recurse  => true,
     owner    => vagrant,
     group    => vagrant,
+    notify   => Exec['make-scripts-executable']
   }
   
   exec { 'make-scripts-executable': 
-    command => 'chmod +x /home/vagrant/scripts/nooku && chmod +x /home/vagrant/scripts/purge.sh',
+    command => 'chmod +x /home/vagrant/scripts/nooku && chmod +x /home/vagrant/scripts/purge.sh && chmod +x /home/vagrant/scripts/varnish',
     require => File['/home/vagrant/scripts']
   }
 
