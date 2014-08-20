@@ -9,7 +9,7 @@ Vagrant.configure("2") do |config|
   config.vm.usable_port_range = (2200..2250)
   config.vm.provider :virtualbox do |v|
     v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
-    v.customize ["modifyvm", :id, "--memory", 1024]
+    v.customize ["modifyvm", :id, "--memory", 512]
     v.customize ["modifyvm", :id, "--name", "nooku-box-build"]
   end
 

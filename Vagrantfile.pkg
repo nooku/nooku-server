@@ -16,9 +16,9 @@ _default_config = {
 }
 
 begin
-  deep_merge!(_default_config, YAML.load(File.open(File.join(Dir.pwd, "config.custom.yaml"), File::RDONLY).read))
+  deep_merge!(_default_config, YAML.load(File.open(File.join(Dir.pwd, "box.config.yaml"), File::RDONLY).read))
 rescue Errno::ENOENT
-  # No config.custom.yaml found -- that's OK; just use the defaults.
+  # No box.config.yaml file found -- that's OK; just use the defaults.
 end
 
 CONF = _default_config
