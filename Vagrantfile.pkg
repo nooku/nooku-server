@@ -1,13 +1,35 @@
+require "yaml"
+
+def deep_merge!(target, data)
+  merger = proc{|key, v1, v2|
+    Hash === v1 && Hash === v2 ? v1.merge(v2, &merger) : v2 }
+  target.merge! data, &merger
+end
+
+_default_config = {
+    "vm_name" => "nooku-box",
+    "nfs"     => (RUBY_PLATFORM =~ /darwin/ || RUBY_PLATFORM =~ /linux/)
+}
+
+begin
+  deep_merge!(_default_config, YAML.load(File.open(File.join(File.dirname(__FILE__), "config.custom.yaml"), File::RDONLY).read))
+rescue Errno::ENOENT
+  # No config.custom.yaml found -- that's OK; just use the defaults.
+end
+
+CONF = _default_config
+
 Vagrant.configure("2") do |config|
   config.vm.network :private_network, ip: "33.33.33.63"
   config.ssh.forward_agent = true
 
-  config.vm.provider :virtualbox do |v|
-    v.customize ["modifyvm", :id, "--name", "nooku-box"]
+  if CONF.has_key?('vm_name')
+    config.vm.provider :virtualbox do |v|
+        v.customize ["modifyvm", :id, "--name", CONF['vm_name']]
+    end
   end
 
-  nfs_setting = RUBY_PLATFORM =~ /darwin/ || RUBY_PLATFORM =~ /linux/
-  config.vm.synced_folder ".", "/var/www/nooku.dev", id: "vagrant-root" , :nfs => nfs_setting
+  config.vm.synced_folder ".", "/var/www/nooku.dev", id: "vagrant-root" , :nfs => CONF['nfs']
 
   config.vm.provision :shell, :inline =>
       "if [[ ! -f /nooku-install-run ]]; then /home/vagrant/scripts/nooku install > /dev/null 2>&1 && sudo touch /nooku-install-run; fi"
