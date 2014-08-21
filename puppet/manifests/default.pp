@@ -270,6 +270,13 @@ nginx::resource::vhost { 'default':
   require     => File['/var/www/default']
 }
 
+exec { 'nginx-include-fastcgi-environment':
+  command => "touch /etc/nginx/fastcgi_environment && echo \"\ninclude  fastcgi_environment;\" >> /etc/nginx/fastcgi_params",
+  unless  => "grep fastcgi_environment /etc/nginx/fastcgi_params",
+  notify  => Class['nginx::service'],
+  require => File["${nginx::config::nx_temp_dir}/nginx.d/nooku-001"]
+}
+
 class { 'mailcatcher': }
 
 class { 'less': }

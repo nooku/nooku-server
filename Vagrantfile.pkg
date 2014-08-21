@@ -39,7 +39,12 @@ Vagrant.configure("2") do |config|
     end
   end
 
-  config.vm.synced_folder ".", "/var/www/nooku.dev", id: "vagrant-root" , :nfs => CONF['nfs']
+  config.vm.synced_folder Dir.pwd, "/var/www/nooku.dev", id: "vagrant-root" , :nfs => CONF['nfs']
+
+  json = {"/var/www/nooku.dev" => Dir.pwd}.to_json.gsub(/"/, '\\\"')
+  paths = 'fastcgi_param    BOX_SHARED_PATHS \'' + json + '\';'
+  shell_cmd = 'echo "' + paths + '" > /etc/nginx/fastcgi_environment && service nginx restart'
+  config.vm.provision :shell, :inline => shell_cmd, :run => "always"
 
   config.vm.provision :shell, :inline =>
       "if [[ ! -f /nooku-install-run ]]; then /home/vagrant/scripts/nooku install > /dev/null 2>&1 && sudo touch /nooku-install-run; fi"
