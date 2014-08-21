@@ -24,6 +24,13 @@ backend alternative {
 }
 
 sub vcl_recv {
+        # Check if we've still enabled Varnish, if not, passthrough every request
+        if (! std.healthy(req.backend_hint))
+        {
+            set req.backend_hint = alternative;
+            return (pass);
+        }
+
         # Do not cache webgrind.nooku.dev and phpmyadmin.nooku.dev
         if (req.http.host == "webgrind.nooku.dev") {
             return (pass);
@@ -33,10 +40,8 @@ sub vcl_recv {
             return (pass);
         }
 
-        # Check if we've still enabled Varnish, if not, passthrough every request
-        if (! std.healthy(req.backend_hint))
-        {
-            set req.backend_hint = alternative;
+        # Do not cache /apc and /phpinfo
+        if (req.url == "/apc" || req.url == "/phpinfo") {
             return (pass);
         }
 
