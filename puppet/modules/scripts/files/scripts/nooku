@@ -101,10 +101,61 @@ class Installer
 
     public function deleteConfiguration()
     {
-        unlink($this->www.'/config/config.php');
+        $files = array(
+            $this->www.'/config/config.php',
+            $this->www.'/config/bootstrapper.php'
+        );
+
+        foreach ($files as $file)
+        {
+            if (file_exists($file)) {
+                unlink($file);
+            }
+        }
     }
 
     public function modifyConfiguration()
+    {
+        if (file_exists($this->www.'/config/bootstrapper.php-empty')) {
+            $this->_modifyBootstrapper();
+        } else {
+            $this->_modifyConfig();
+        }
+    }
+
+    protected function _modifyBootstrapper()
+    {
+        $config = require $this->www.'/config/bootstrapper.php-empty';
+
+        $settings =  array(
+            'identifiers' => array(
+                'application'  => array(
+                    'sendmail' => '/usr/bin/env catchmail'
+                ),
+                'lib:database.adapter.mysql' =>  array(
+                    'auto_connect' => true,
+                    'database'     => $this->database,
+                    'host'          => '127.0.0.1',
+                    'username'      => 'root',
+                    'password'      => 'root',
+
+                ),
+                'dispatcher.request' => array(
+                    'proxies' => array('33.33.33.63')
+                )
+            )
+        );
+
+        $config = array_replace_recursive($config, $settings);
+
+        $export       = '<?php ' . PHP_EOL . 'return ' . var_export($config, true) . ';';
+        $bootstrapper = $this->www.'/config/bootstrapper.php';
+
+        file_put_contents($bootstrapper, $export);
+        chmod($bootstrapper, 0644);
+    }
+
+    protected function _modifyConfig()
     {
         $input    = $this->www.'/config/config.php-dist';
         $output   = $this->www.'/config/config.php';

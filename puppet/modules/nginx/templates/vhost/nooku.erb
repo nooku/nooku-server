@@ -4,6 +4,8 @@ server {
   server_name           nooku.dev;
   access_log            /var/log/nginx/nooku.dev.access.log;
 
+  port_in_redirect off;
+
   root   /var/www/nooku.dev;
 
   pagespeed on;
