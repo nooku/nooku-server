@@ -1,11 +1,12 @@
 # Changelog
 
-## 3.1.0 (21 Aug 2014)
+## 3.1.0 (24 Aug 2014)
 
 - Added - Installed Varnish cache in front of Nginx
 - Added - Created `varnish` command to manage Varnish
 - Added - Install PEAR packages Console_CommandLine and Phing by default
 - Improved - Allow VM to be configured through config.custom.yaml file. (# CPU's, memory and VM name)
+- Improved - Support new bootstrapper.php configuration file.
 - Added - Set path mappings through the BOX_SHARED_PATHS environment variable.
 - Improved - Updated Virtualbox guest additions to 4.3.14
 
