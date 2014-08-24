@@ -24,6 +24,13 @@ backend alternative {
 }
 
 sub vcl_recv {
+        # Forward client's IP to backend
+        unset req.http.X-Forwarded-For;
+        set req.http.X-Forwarded-For = client.ip;
+
+        set req.http.X-Forwarded-By = server.ip;
+        set req.http.X-Forwarded-Port = 80;
+
         # Check if we've still enabled Varnish, if not, passthrough every request
         if (! std.healthy(req.backend_hint))
         {
