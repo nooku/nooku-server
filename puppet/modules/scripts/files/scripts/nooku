@@ -125,6 +125,8 @@ class Installer
 
     protected function _modifyBootstrapper()
     {
+        define('APPLICATION_NAME', 'nooku');
+
         $config = require $this->www.'/config/bootstrapper.php-empty';
 
         $settings =  array(
