@@ -12,7 +12,7 @@ Building the box
 ```
 
 * Install [VirtualBox](http://www.virtualbox.org/)
-* Install [Vagrant](http://downloads.vagrantup.com/)
+* Install [Vagrant](http://www.vagrantup.com/)
 * Run `vagrant up`
 
 ```
