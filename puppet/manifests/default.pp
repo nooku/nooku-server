@@ -270,6 +270,19 @@ nginx::resource::vhost { 'default':
   require     => File['/var/www/default']
 }
 
+nginx::resource::location { 'varnish-enabled':
+  ensure              => 'present',
+  vhost               => 'default',
+  location            => '= /varnish-enabled',
+  www_root            => '/var/www/default',
+  location_cfg_append => {
+    'error_log'  => '/dev/null',
+    'access_log' => 'off'
+  },
+  notify              => Class['nginx::service'],
+  require             => Nginx::Resource::Vhost['default'],
+}
+
 exec { 'nginx-include-fastcgi-environment':
   command => "touch /etc/nginx/fastcgi_environment && echo \"\ninclude  fastcgi_environment;\" >> /etc/nginx/fastcgi_params",
   unless  => "grep fastcgi_environment /etc/nginx/fastcgi_params",
