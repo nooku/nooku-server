@@ -17,9 +17,12 @@ apt::ppa { 'ppa:ondrej/php5-oldstable':
   require => Apt::Key['4F4EA0AAE5267A6C']
 }
 
-apt::source { 'nginx':
-  location => 'http://ppa.launchpad.net/sandyd/nginx-current-pagespeed/ubuntu',
-  key      => '5626E4A6F2F46C93'
+apt::key { 'nginx':
+  key     => 'FA4657A64602F602'
+}
+
+apt::ppa { 'ppa:adegtyarev/nginx-pagespeed':
+  require => Apt::Key['nginx']
 }
 
 apt::source { 'mariadb':
@@ -290,7 +293,15 @@ exec { 'nginx-include-fastcgi-environment':
   require => File["${nginx::config::nx_temp_dir}/nginx.d/nooku-001"]
 }
 
-class { 'mailcatcher': }
+exec { 'gem-i18n-legacy':
+  command => '/opt/vagrant_ruby/bin/gem install i18n -v=0.6.5',
+  unless  => 'test `/opt/vagrant_ruby/bin/gem list --local | grep -q 0.6.5; echo $?` -eq 0',
+  path    => ['/usr/bin', '/bin'],
+}
+
+class { 'mailcatcher':
+  require => Exec['gem-i18n-legacy']
+}
 
 class { 'less': }
 
