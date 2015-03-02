@@ -22,6 +22,10 @@ Building the box
 Repackaging the box
 -----------------
 
+SSH into the vagrant box
+
+   $ vagrant ssh
+
 Run purge.sh to reduce the VM size:
 
     $ sudo purge.sh
