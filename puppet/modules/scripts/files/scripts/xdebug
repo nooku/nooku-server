@@ -59,7 +59,7 @@ class XDebug
             }
         }
 
-        `sudo /etc/init.d/nginx restart`;
+        `sudo /etc/init.d/php5-fpm restart`;
     }
 
     public function disable()
@@ -71,6 +71,6 @@ class XDebug
             }
         }
 
-        `sudo /etc/init.d/nginx restart`;
+        `sudo /etc/init.d/php5-fpm restart`;
     }
 }
