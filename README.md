@@ -51,6 +51,13 @@ Go to your [Nooku Platform](https://github.com/nooku/nooku-platform) clone and t
 
     $ cd /path/to/nooku-platform
     $ vagrant destroy # if you've created the box before
+
+You will also need to comment out/remove the version requirement from the project's Vagrantfile in order to test the box
+
+    config.vm.box_version = "3.1.0" -> #config.vm.box_version = "3.1.0"
+
+Then start your vagrant box:
+
     $ vagrant up
 	
 Share your box using [Vagrant Cloud](http://vagrantcloud.com)!
