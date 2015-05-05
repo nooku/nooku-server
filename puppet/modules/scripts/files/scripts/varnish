@@ -7,6 +7,8 @@ Varnish::fromInput();
 
 class Varnish
 {
+    private $__varnish_flag = '/var/www/default/varnish-enabled';
+
     public $task;
 
     public function __construct($task)
@@ -50,14 +52,18 @@ class Varnish
 
     public function enable()
     {
-        `sudo touch /var/www/default/varnish-enabled`;
+        if (!file_exists($this->__varnish_flag)) {
+            `sudo touch $this->__varnish_flag`;
+        }
 
         $this->purge();
     }
 
     public function disable()
     {
-        `sudo rm /var/www/default/varnish-enabled`;
+        if (file_exists($this->__varnish_flag)) {
+            `sudo rm $this->__varnish_flag`;
+        }
 
         $this->purge();
     }
