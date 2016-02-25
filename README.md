@@ -1,5 +1,5 @@
-README
-======
+Nooku Server
+===========
 
 Building the box
 ----------------
