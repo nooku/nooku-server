@@ -61,3 +61,25 @@ Then start your vagrant box:
     $ vagrant up
 	
 Share your box using [Vagrant Cloud](http://vagrantcloud.com)!
+
+## Contributing
+
+Nooku Server is an open source, community-driven project. Contributions are welcome from everyone. 
+We have [contributing guidelines](CONTRIBUTING.md) to help you get started.
+
+## Contributors
+
+See the list of [contributors](https://github.com/nooku/nooku-server/contributors).
+
+## License 
+
+Nooku Server is free and open-source software licensed under the [GPLv3 license](LICENSE.txt).
+
+## Community
+
+Keep track of development and community news.
+
+* Follow [@joomlatoolsdev on Twitter](https://twitter.com/joomlatoolsdev)
+* Join [joomlatools/dev on Gitter](http://gitter.im/joomlatools/dev)
+* Read the [Joomlatools Developer Blog](https://www.joomlatools.com/developer/blog/)
+* Subscribe to the [Joomlatools Developer Newsletter](https://www.joomlatools.com/developer/newsletter/)
